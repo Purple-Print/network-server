@@ -1,6 +1,6 @@
 server:
   port: 8080
 
-  profiles:
-    include: aws
-
+spring:
+  config:
+    import: classpath:application-aws.yml
