@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql:thin:@purpleprint-db.cobnraaxcbeh.ap-northeast-2.rds.amazonaws.com
+    username: purpleprint
+    password: purpleprint2022!
