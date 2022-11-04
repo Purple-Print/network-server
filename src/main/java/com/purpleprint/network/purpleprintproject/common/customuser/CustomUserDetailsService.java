@@ -71,11 +71,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         userDto.setId(user.getId());
         userDto.setUsername(user.getUsername());
         userDto.setPassword(user.getPwd());
-        userDto.setRole(user.getRole());
+        userDto.setRole(user.getRole().toString());
         userDto.setEmail(user.getEmail());
         userDto.setName(user.getName());
         userDto.setChildList(childDTOList);
-        userDto.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(userDto.getRole().toString())));
+        userDto.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(userDto.getRole())));
 
         return userDto;
     }

@@ -3,6 +3,7 @@ package com.purpleprint.network.purpleprintproject.common.config;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.UserRole;
 import com.purpleprint.network.purpleprintproject.jwt.JwtAccessDeniedHandler;
 import com.purpleprint.network.purpleprintproject.jwt.JwtAuthenticationEntryPoint;
+import com.purpleprint.network.purpleprintproject.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,11 +38,12 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
+    private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+    public SecurityConfig(TokenProvider tokenProvider, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+        this.tokenProvider = tokenProvider;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
     }
@@ -76,9 +78,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .antMatchers("/auth/**").permitAll()
-                    .antMatchers("/**").hasAnyRole(UserRole.ADMIN.toString(), UserRole.USER.toString())
+                    .antMatchers("/**").hasAnyRole("USER", "ADMIN")
                 .and()
-                .cors();
+                .cors()
+                .and()
+                // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
+                .apply(new JwtSecurityConfig(tokenProvider));
 
     }
 
