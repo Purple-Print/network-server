@@ -22,4 +22,3 @@ spring:
       resourceserver:
         jwt:
           audiences:
-
