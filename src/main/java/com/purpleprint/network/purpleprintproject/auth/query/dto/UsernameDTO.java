@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
  * ================================================================
  * DATE             AUTHOR           NOTE
  * ----------------------------------------------------------------
- * 2022-11-03       홍길동           최초 생성
+ * 2022-11-03       전현정           최초 생성
  * </pre>
  *
- * @author 홍길동(최초 작성자)
+ * @author 전현정(최초 작성자)
  * @version 1(클래스 버전)
- * @see 참고할 class 또는 외부 url
+ * @see 
  */
 
 @Data   //lombok 사용시 class의 모든 필드에 대한 getter/setter/toString/equals 와 같은 함수 사용 가능
