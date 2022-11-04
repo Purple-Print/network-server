@@ -141,4 +141,16 @@ public class AuthService {
         return loginUser;
     }
 
+    public Boolean matchUsername(MatchUsernameDTO matchUsernameDTO) throws MessagingException {
+
+        User user = userRepository.findByNameAndEmail(matchUsernameDTO.getName(), matchUsernameDTO.getEmail());
+
+        if(user == null) {
+            return false;
+        }
+
+        mailService.sendEmailForMatchUsername(user.getEmail(), user.getUsername());
+
+        return true;
+    }
 }
