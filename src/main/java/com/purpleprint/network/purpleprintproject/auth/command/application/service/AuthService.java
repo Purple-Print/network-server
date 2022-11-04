@@ -15,8 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <pre>
@@ -37,16 +39,20 @@ import java.util.List;
 public class AuthService {
     private final UserRepository userRepository;
     private final ChildRepository childRepository;
+    private final MailService mailService;
 
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
     @Autowired
-    public AuthService(UserRepository userRepository, ChildRepository childRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
+    public AuthService(UserRepository userRepository, ChildRepository childRepository,
+                       PasswordEncoder passwordEncoder, TokenProvider tokenProvider,
+                       MailService mailService) {
         this.userRepository = userRepository;
         this.childRepository = childRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
+        this.mailService = mailService;
     }
     @Transactional
     public UserDTO signup(SignUpDTO signUpDTO) {
@@ -70,5 +76,23 @@ public class AuthService {
         return userDTO;
     }
 
+    public int sendEmail(String email) throws MessagingException {
+
+        int result = userRepository.countByEmail(email);
+
+        System.out.println(email);
+
+        if(result > 0) {
+            return 0;
+        }
+
+        Random random = new Random();
+        int certCode = random.nextInt(888888) + 111111;
+        System.out.println("인증번호 : " + certCode);
+
+        mailService.sendEmail(email, certCode);
+
+        return certCode;
+    }
 
 }
