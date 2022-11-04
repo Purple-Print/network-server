@@ -103,7 +103,7 @@ public class AuthController {
     }
 
     @PostMapping("/match/id")
-    public ResponseEntity<?> matchUsername(@RequestBody MatchUsernameDTO matchUsernameDTO) throws MessagingException {
+    public ResponseEntity<?> matchUsername(@Valid @RequestBody MatchUsernameDTO matchUsernameDTO) throws MessagingException {
         HttpHeaders headers = new HttpHeaders(); //헤더 생성
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
         Map<String,Object> responseMap = new HashMap<>();
@@ -111,6 +111,28 @@ public class AuthController {
         boolean result = authService.matchUsername(matchUsernameDTO);
 
         responseMap.put("userInfo", matchUsernameDTO);
+
+        if(result) {
+            return ResponseEntity
+                    .ok()
+                    .body(new ResponseMessage(HttpStatus.OK, "send email success", responseMap));
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST, "name,email not match", responseMap));
+        }
+
+    }
+
+    @PostMapping("/match/password")
+    public ResponseEntity<?> matchPassword(@Valid @RequestBody MatchPasswordDTO matchPasswordDTO) throws MessagingException {
+        HttpHeaders headers = new HttpHeaders(); //헤더 생성
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
+        Map<String,Object> responseMap = new HashMap<>();
+
+        boolean result = authService.matchPassword(matchPasswordDTO);
+
+        responseMap.put("userInfo", matchPasswordDTO);
 
         if(result) {
             return ResponseEntity
