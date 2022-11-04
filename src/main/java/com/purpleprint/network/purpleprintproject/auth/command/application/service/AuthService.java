@@ -16,9 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.security.SecureRandom;
+import java.util.*;
 
 /**
  * <pre>
@@ -153,4 +152,28 @@ public class AuthService {
 
         return true;
     }
+
+    public boolean matchPassword(MatchPasswordDTO matchPasswordDTO) throws MessagingException {
+
+        User foundUser = userRepository.findByUsernameAndEmail(matchPasswordDTO.getUsername(), matchPasswordDTO.getEmail());
+
+        if(foundUser == null) {
+            return false;
+        }
+
+        String tempPassword = getRamdomPassword(10);
+        System.out.println(tempPassword);
+
+        String password = passwordEncoder.encode(tempPassword);
+
+        foundUser.setPwd(password);
+        foundUser.setTempPwd("Y");
+
+        userRepository.save(foundUser);
+
+        mailService.sendEmailForMatchPassword(foundUser.getEmail(), tempPassword);
+
+        return true;
+    }
+
 }
