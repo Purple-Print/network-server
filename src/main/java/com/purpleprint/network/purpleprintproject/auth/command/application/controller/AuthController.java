@@ -86,5 +86,20 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO) {
+        HttpHeaders headers = new HttpHeaders(); //헤더 생성
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
+        Map<String,Object> responseMap = new HashMap<>();
+
+
+        UserDTO userDTO = authService.login(loginDTO);
+
+        responseMap.put("userInfo",userDTO);
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "", responseMap));
+    }
 
 }
