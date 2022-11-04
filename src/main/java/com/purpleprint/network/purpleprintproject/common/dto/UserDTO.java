@@ -32,11 +32,11 @@ public class UserDTO implements UserDetails {
     private String name;        // user name
 
     private List<ChildDTO> childList; // user child
-    private UserRole role;        // user role
+    private String role;        // user role
 
     public UserDTO() {}
 
-    public UserDTO(int id, String username, String password, String email, String name, List<ChildDTO> childList, UserRole role, Collection<? extends GrantedAuthority> authorities) {
+    public UserDTO(int id, String username, String password, String email, String name, List<ChildDTO> childList, String role, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -87,11 +87,11 @@ public class UserDTO implements UserDetails {
         this.childList = childList;
     }
 
-    public UserRole getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

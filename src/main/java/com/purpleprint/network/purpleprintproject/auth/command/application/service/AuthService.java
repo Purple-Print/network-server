@@ -62,7 +62,7 @@ public class AuthService {
         user.setPwd(passwordEncoder.encode(signUpDTO.getPassword()));
         user.setName(signUpDTO.getName());
         user.setEmail(signUpDTO.getEmail());
-        user.setRole(UserRole.USER);
+        user.setRole(UserRole.ROLE_USER);
 
         User newUser = userRepository.save(user);
 

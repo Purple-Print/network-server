@@ -62,8 +62,7 @@ public class TokenProvider {
 
         Claims claims = Jwts
                 .claims()
-                .setSubject(user.getUsername())
-                .setSubject(user.getName());
+                .setSubject(user.getUsername());
 
         //.setSubject(String.valueOf(member.getMemberCode()));
         claims.put(AUTHORITIES_KEY, roles);
@@ -114,7 +113,7 @@ public class TokenProvider {
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(accessToken));
-
+        System.out.println(userDetails);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

@@ -16,5 +16,10 @@ package com.purpleprint.network.purpleprintproject.auth.command.domain.model;
  * @see 
  */
 public enum UserRole {
-    ADMIN, USER
+    ROLE_USER("ROLE_USER"), ROLE_ADMIN("ROLE_ADMIN");
+
+    private String text;
+    UserRole(String text) {this.text = text;}
+
+    public String getText() { return text; }
 }
