@@ -95,4 +95,50 @@ public class AuthService {
         return certCode;
     }
 
+
+    public UserDTO login(LoginDTO loginDTO) {
+        //user 아이디 조회
+        User user = userRepository.findByUsername(loginDTO.getUsername());
+
+        if(user == null) {
+            throw new LoginFailedException("존재하지 않는 아이디입니다.");
+        }
+
+        //password 매칭
+        if(!passwordEncoder.matches(loginDTO.getPassword(), user.getPwd())) {
+            throw new LoginFailedException("비밀번호가 일치하지 않습니다.");
+        }
+
+        //자녀 계정 정보 조회
+        List<ChildDTO> childDTOList = new ArrayList<>();
+        List<Child> childList = childRepository.findAllByUserId(user.getId());
+
+        childList.forEach(child -> {
+            ChildDTO childDTO = new ChildDTO();
+
+            childDTO.setChildId(child.getId());
+            childDTO.setChildName(child.getName());
+            childDTO.setConnectNum(child.getConnectNum());
+            childDTO.setGrantHeart(child.getGrantHeart());
+            childDTO.setGivenHeart(child.getGivenHeart());
+
+            childDTOList.add(childDTO);
+        });
+
+        // 3. 토큰 발급
+        TokenDTO tokenDTO = tokenProvider.generateTokenDto(user);
+
+        // 4. userDTO 생성
+        UserDTO loginUser = new UserDTO();
+        loginUser.setId(user.getId());
+        loginUser.setUsername(user.getUsername());
+        loginUser.setName(user.getName());
+        loginUser.setEmail(user.getEmail());
+        loginUser.setRole(user.getRole());
+        loginUser.setAccessToken(tokenDTO.getAccessToken());
+        loginUser.setChildList(childDTOList);
+
+        return loginUser;
+    }
+
 }
