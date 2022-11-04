@@ -1,6 +1,25 @@
 server:
   port: 8080
 
-  profiles:
-    include: aws
+spring:
+  config:
+    import:
+     - classpath:application-aws.yml #aws
+     - classpath:application-jwt.yml #JwtConfig
+     - classpath:application-mail.yml #mail
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        show-sql: true
+    generate-ddl: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          audiences:
 
