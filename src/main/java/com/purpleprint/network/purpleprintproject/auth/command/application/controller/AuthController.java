@@ -1,11 +1,8 @@
 package com.purpleprint.network.purpleprintproject.auth.command.application.controller;
 
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.LoginDTO;
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.SignUpDTO;
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.TokenDTO;
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.UserDTO;
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.*;
 import com.purpleprint.network.purpleprintproject.auth.command.application.service.AuthService;
-import com.purpleprint.network.purpleprintproject.auth.command.domain.model.User;
+import com.purpleprint.network.purpleprintproject.auth.command.application.service.MailService;
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -43,9 +41,11 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+    private final MailService mailService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, MailService mailService) {
         this.authService = authService;
+        this.mailService = mailService;
     }
 
     @PostMapping("/signup")
@@ -64,8 +64,27 @@ public class AuthController {
                 .body(new ResponseMessage(HttpStatus.CREATED, "SignUp Success", responseMap));
     }
 
+    @PostMapping("/email")
+    public ResponseEntity<?> emailVerify(@Valid @RequestBody EmailDTO emailDTO) throws MessagingException {
+        HttpHeaders headers = new HttpHeaders(); //헤더 생성
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
+        Map<String,Object> responseMap = new HashMap<>();
+
+        int result = authService.sendEmail(emailDTO.getEmail());
 
 
+        if (result == 0){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST, "email is duplicated", responseMap));
+        } else {
+
+            responseMap.put("certCode", result);
+            return ResponseEntity
+                    .ok()
+                    .body(new ResponseMessage(HttpStatus.OK, "username is available",responseMap));
+        }
+    }
 
 
 }
