@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <pre>
  * Class : ChildDTO
@@ -25,8 +27,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor  // 파라미터가 없는 기본 생성자를 생성
 public class ChildDTO {
     private int childId;
+
+    @NotBlank(message = "계정 이름은 필수 입력 값입니다.")
     private String childName;
     private int connectNum;
     private int grantHeart;
     private int givenHeart;
+    private int userId;
 }

@@ -4,6 +4,7 @@ import com.purpleprint.network.purpleprintproject.common.responsemessage.Respons
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @version 1(클래스 버전)
  * @see
  */
+@ControllerAdvice // @Controller나 @RestController 에서 발생한 예외를 한 곳에서 관리하고 처리할 수 있게 도와주는 어노테이션
 public class ValidExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
