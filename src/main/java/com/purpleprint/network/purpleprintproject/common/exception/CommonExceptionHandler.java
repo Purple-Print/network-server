@@ -30,8 +30,20 @@ import java.util.Map;
 @ControllerAdvice // @Controller나 @RestController 에서 발생한 예외를 한 곳에서 관리하고 처리할 수 있게 도와주는 어노테이션
 public class CommonExceptionHandler {
 
-    @ExceptionHandler({LoginFailedException.class})
+    @ExceptionHandler(value = {LoginFailedException.class})
     protected ResponseEntity<?> loginFailedException(LoginFailedException ex) {
+
+        Map<String,Object> responseMap = new HashMap<>();
+
+        responseMap.put("error", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
+    }
+
+    @ExceptionHandler(value = {ChildAccountCreationFailException.class})
+    protected ResponseEntity<?> childAccountCreationFailedException(ChildAccountCreationFailException ex) {
 
         Map<String,Object> responseMap = new HashMap<>();
 
