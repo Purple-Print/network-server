@@ -26,4 +26,6 @@ import java.util.List;
 public interface ChildRepository extends JpaRepository<Child, Integer> {
 
     List<Child> findAllByUserId(Integer id);
+
+    int countByUserId(int userId);
 }
