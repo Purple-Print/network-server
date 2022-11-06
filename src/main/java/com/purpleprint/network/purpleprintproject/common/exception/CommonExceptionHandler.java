@@ -2,6 +2,7 @@ package com.purpleprint.network.purpleprintproject.common.exception;
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ChildAccountCreationFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.GrantFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.LoginFailedException;
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,18 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(value = {DeleteUserFailException.class})
     protected ResponseEntity<?> deleteUserFailedException(DeleteUserFailException ex) {
+
+        Map<String,Object> responseMap = new HashMap<>();
+
+        responseMap.put("error", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
+    }
+
+    @ExceptionHandler(value = {GrantFailException.class})
+    protected ResponseEntity<?> grantFailExceptionHandler(GrantFailException ex) {
 
         Map<String,Object> responseMap = new HashMap<>();
 
