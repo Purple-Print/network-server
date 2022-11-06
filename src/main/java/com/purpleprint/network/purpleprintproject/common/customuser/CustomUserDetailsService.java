@@ -48,25 +48,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepository.findByUsername(username);
-
         if(user == null){
             throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
         }
 
         /* custom user 정보 생성 */
-        List<Child> childList = childRepository.findAllByUserId(user.getId());
         UserDTO userDto = new UserDTO();
         List<ChildDTO> childDTOList = new ArrayList<>();
-        for (Child child : childList) {
-            ChildDTO childDto = new ChildDTO();
-            childDto.setChildId(child.getId());
-            childDto.setConnectNum(child.getConnectNum());
-            childDto.setChildName(child.getName());
-            childDto.setGrantHeart(child.getGrantHeart());
-            childDto.setGivenHeart(child.getGivenHeart());
-
-            childDTOList.add(childDto);
-        }
 
         userDto.setId(user.getId());
         userDto.setUsername(user.getUsername());
@@ -74,7 +62,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         userDto.setRole(user.getRole().toString());
         userDto.setEmail(user.getEmail());
         userDto.setName(user.getName());
-        userDto.setChildList(childDTOList);
         userDto.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(userDto.getRole())));
 
         return userDto;
