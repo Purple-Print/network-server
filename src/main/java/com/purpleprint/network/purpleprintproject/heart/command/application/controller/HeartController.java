@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.nio.charset.Charset;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public class HeartController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> giveHeart (@RequestBody HeartDTO heartDTO) {
+    public ResponseEntity<?> giveHeart (@RequestBody HeartDTO heartDTO) throws ParseException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
