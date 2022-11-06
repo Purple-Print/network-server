@@ -97,7 +97,7 @@ public class AuthService {
 
     public UserDTO login(LoginDTO loginDTO) {
         //user 아이디 조회
-        User user = userRepository.findByUsername(loginDTO.getUsername());
+        User user = userRepository.findByUsernameAndSecYn(loginDTO.getUsername(), "N");
 
         if(user == null) {
             throw new LoginFailedException("존재하지 않는 아이디입니다.");

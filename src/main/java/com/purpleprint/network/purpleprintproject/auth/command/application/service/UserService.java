@@ -18,6 +18,7 @@ package com.purpleprint.network.purpleprintproject.auth.command.application.serv
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildDTO;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ChildAccountCreationFailException;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.User;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.ChildRepository;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,5 +82,19 @@ public class UserService {
     public List<Child> selectChildList(int id) {
 
         return childRepository.findAllByUserId(id);
+    }
+
+    @Transactional
+    public Boolean deleteUser(int id){
+
+        try {
+            User user = userRepository.findById(id).get();
+            user.setSecYn("Y");
+            user.setSecAt( new Date(new java.util.Date().getTime()));
+        } catch(Exception e) {
+            throw new DeleteUserFailException("회원 탈퇴에 실패하셨습니다.");
+        }
+
+        return true;
     }
 }

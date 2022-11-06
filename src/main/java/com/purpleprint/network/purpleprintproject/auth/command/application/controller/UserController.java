@@ -1,6 +1,7 @@
 package com.purpleprint.network.purpleprintproject.auth.command.application.controller;
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildDTO;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.application.service.UserService;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
@@ -66,4 +67,21 @@ public class UserController {
                 .body(new ResponseMessage(HttpStatus.CREATED, "child account create success", responseMap));
     }
 
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteUser(@AuthenticationPrincipal UserDTO userDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        Map<String,Object> responseMap = new HashMap<>();
+
+        boolean result = userService.deleteUser(userDTO.getId());
+
+        if(result) {
+            responseMap.put("status", "success");
+        }
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "User secession Success", responseMap));
+
+    }
 }
