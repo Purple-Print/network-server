@@ -28,4 +28,8 @@ public interface ChildRepository extends JpaRepository<Child, Integer> {
     List<Child> findAllByUserId(Integer id);
 
     int countByUserId(int userId);
+
+    Child findByName(String username);
+
+    Child findByIdAndUserId(int id, int userId);
 }
