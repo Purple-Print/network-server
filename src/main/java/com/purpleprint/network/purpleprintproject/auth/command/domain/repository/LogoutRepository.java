@@ -21,4 +21,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface LogoutRepository extends JpaRepository<Logout, Integer> {
+    Logout findByLoginId(int id);
 }
