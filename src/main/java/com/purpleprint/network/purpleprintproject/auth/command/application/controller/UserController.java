@@ -2,6 +2,7 @@ package com.purpleprint.network.purpleprintproject.auth.command.application.cont
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildDTO;
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildInfoDTO;
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.PasswordDTO;
 import com.purpleprint.network.purpleprintproject.auth.command.application.service.UserService;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
@@ -99,6 +100,22 @@ public class UserController {
         return ResponseEntity
                 .ok()
                 .body(new ResponseMessage(HttpStatus.OK, "Child Login Success", responseMap));
+
+    }
+
+    @PutMapping("")
+    public ResponseEntity<?> putUserInfo(@AuthenticationPrincipal UserDTO userDTO, @Valid @RequestBody PasswordDTO passwordDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        Map<String,Object> responseMap = new HashMap<>();
+
+        userService.updatePassword(userDTO, passwordDTO);
+
+        responseMap.put("message", "비밀번호 변경에 성공하셨습니다.");
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "edit password success ", responseMap));
 
     }
 }
