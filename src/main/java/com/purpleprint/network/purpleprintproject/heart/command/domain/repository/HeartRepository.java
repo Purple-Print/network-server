@@ -1,8 +1,8 @@
 package com.purpleprint.network.purpleprintproject.heart.command.domain.repository;
 
-import com.purpleprint.network.purpleprintproject.heart.command.application.dto.HeartDTO;
 import com.purpleprint.network.purpleprintproject.heart.command.domain.model.Heart;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
