@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -39,12 +42,24 @@ public class HeartService {
     }
 
     @Transactional
-    public int giveHeart(HeartDTO heartDTO) {
+    public int giveHeart(HeartDTO heartDTO) throws ParseException {
 
-        List<Heart> heartInfo = heartRepository.findByGiverAndGaveAt(heartDTO.getGiver(), new Date());
+        String t1 = LocalDate.now() + " 00:00:00";
+        String t2 = LocalDate.now() + " 23:59:59";
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date date1 = formatter.parse(t1);
+        Date date2 = formatter.parse(t2);
+
+        System.out.println("date1 : " + date2);
+
+        List<Heart> heartInfo = heartRepository.findByGiverAndGaveAtBetween(heartDTO.getGiver(), date1, date2);
+
+        System.out.println("heartInfo : " + heartInfo);
 
         for(int i=0; i<heartInfo.size(); i++){
-            if(heartInfo.get(i).getId() == heartDTO.getId()) {
+            if(heartInfo.get(i).getRecipient() == heartDTO.getRecipient()) {
                 return 0;
             }
         }
@@ -56,7 +71,7 @@ public class HeartService {
                     new Date(new java.util.Date().getTime())
             ));
 
-        int giveHeartResult = childHeartService.giveHeart(heartDTO.getId());
+        int giveHeartResult = childHeartService.giveHeart(heartDTO.getGiver());
 
         if(giveHeartResult == 0) {
 
