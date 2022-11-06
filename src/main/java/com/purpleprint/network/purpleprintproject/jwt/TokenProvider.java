@@ -2,21 +2,20 @@ package com.purpleprint.network.purpleprintproject.jwt;
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.TokenDTO;
 
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.UserDTO;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.User;
+import com.purpleprint.network.purpleprintproject.common.customuser.ChildCustomUserDetailsService;
+import com.purpleprint.network.purpleprintproject.common.customuser.CustomUserDetailsService;
 import com.purpleprint.network.purpleprintproject.common.exception.TokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -43,14 +42,18 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 1440;            // 24시간
 
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
+    private final ChildCustomUserDetailsService childCustomUserDetailsService;
 
     private final Key key;
 
-    public TokenProvider(@Value("${jwt.secret}") String secretKey, UserDetailsService userDetailsService) {
+
+    public TokenProvider(@Value("${jwt.secret}") String secretKey, CustomUserDetailsService userDetailsService,
+                         ChildCustomUserDetailsService childCustomUserDetailsService) {
         this.userDetailsService = userDetailsService;
+        this.childCustomUserDetailsService = childCustomUserDetailsService;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -63,8 +66,6 @@ public class TokenProvider {
         Claims claims = Jwts
                 .claims()
                 .setSubject(user.getUsername());
-
-        //.setSubject(String.valueOf(member.getMemberCode()));
         claims.put(AUTHORITIES_KEY, roles);
 
         Map<String, Object> userInfo = new HashMap<>();
@@ -84,7 +85,46 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
+
+
         return new TokenDTO(BEARER_TYPE, user.getName(), accessToken, accessTokenExpiresIn.getTime());
+    }
+
+    public TokenDTO childTokenDto(User user, Child child) {
+
+        // 권한들 가져오기
+        List<String> roles =  Collections.singletonList(user.getRole().toString());
+
+        Claims claims = Jwts
+                .claims()
+                .setSubject(child.getName());
+
+        claims.put(AUTHORITIES_KEY, roles);
+
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("userId", user.getId());
+        userInfo.put("userName", user.getUsername());
+
+        Map<String, Object> childInfo = new HashMap<>();
+        childInfo.put("userChildId", child.getId());
+        childInfo.put("userChildName", child.getName());
+
+        claims.put("userInfo", userInfo);
+        claims.put("childInfo", childInfo);
+
+        long now = (new Date()).getTime();
+
+        // Access Token 생성
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        String accessToken = Jwts.builder()
+                .setClaims(claims)
+                //.claim(AUTHORITIES_KEY, roles)
+                .setExpiration(accessTokenExpiresIn)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+
+        return new TokenDTO(BEARER_TYPE, user.getName(), accessToken, accessTokenExpiresIn.getTime());
+
     }
 
     public String getUserId(String accessToken) {
@@ -111,9 +151,17 @@ public class TokenProvider {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        // UserDetails 객체를 만들어서 Authentication 리턴
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(accessToken));
-        System.out.println(userDetails);
+
+        UserDetails userDetails = null;
+        if(claims.get("childInfo") == null) {
+            // UserDetails 객체를 만들어서 Authentication 리턴
+            userDetails = userDetailsService.loadUserByUsername(this.getUserId(accessToken));
+
+        } else {
+            //childInfo가 있는 경우는 child name이 userId
+            userDetails = childCustomUserDetailsService.loadUserByUsername(this.getUserId(accessToken));
+        }
+
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

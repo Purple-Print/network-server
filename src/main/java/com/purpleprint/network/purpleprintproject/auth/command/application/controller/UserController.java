@@ -1,7 +1,7 @@
 package com.purpleprint.network.purpleprintproject.auth.command.application.controller;
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildDTO;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildInfoDTO;
 import com.purpleprint.network.purpleprintproject.auth.command.application.service.UserService;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
@@ -82,6 +82,23 @@ public class UserController {
         return ResponseEntity
                 .ok()
                 .body(new ResponseMessage(HttpStatus.OK, "User secession Success", responseMap));
+
+    }
+
+    @PostMapping("/child/connect")
+    public ResponseEntity<?> postConnectChild(@AuthenticationPrincipal UserDTO userDTO, @Valid @RequestBody ChildDTO childDTO) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        Map<String,Object> responseMap = new HashMap<>();
+
+        ChildInfoDTO childInfo = userService.connectChild(userDTO, childDTO);
+
+        responseMap.put("childInfo", childInfo);
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "Child Login Success", responseMap));
 
     }
 }
