@@ -17,14 +17,8 @@ package com.purpleprint.network.purpleprintproject.auth.command.application.serv
  * @see
  */
 
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.CharacterDTO;
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildDTO;
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildInfoDTO;
-import com.purpleprint.network.purpleprintproject.auth.command.application.dto.TokenDTO;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ChildAccountCreationFailException;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ConnectFailException;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.GrantFailException;
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.*;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.*;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Login;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Logout;
@@ -38,6 +32,7 @@ import com.purpleprint.network.purpleprintproject.character.command.domain.model
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
 import com.purpleprint.network.purpleprintproject.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,11 +50,12 @@ public class UserService {
     private final LogoutRepository logoutRepository;
     private final TokenProvider tokenProvider;
     private final OwnerService ownerService;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
     public UserService(UserRepository userRepository, ChildRepository childRepository, LoginRepository loginRepository,
-                       TokenProvider tokenProvider, OwnerService ownerService, LogoutRepository logoutRepository) {
+                       TokenProvider tokenProvider, OwnerService ownerService, LogoutRepository logoutRepository, PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
         this.childRepository= childRepository;
@@ -67,6 +63,7 @@ public class UserService {
         this.logoutRepository = logoutRepository;
         this.tokenProvider = tokenProvider;
         this.ownerService = ownerService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -199,5 +196,16 @@ public class UserService {
         );
 
         return childInfo;
+    }
+
+    @Transactional
+    public void updatePassword(UserDTO userDTO, PasswordDTO passwordDTO) {
+
+        User user = userRepository.findById(userDTO.getId()).get();
+        try {
+            user.setPwd(passwordEncoder.encode(passwordDTO.getPassword()));
+        } catch(Exception e) {
+            throw new UpdatePasswordFailException("비밀번호 변경에 실패했습니다.");
+        }
     }
 }
