@@ -9,6 +9,7 @@ package com.purpleprint.network.purpleprintproject.auth.command.application.serv
  * DATE             AUTHOR           NOTE
  * ----------------------------------------------------------------
  * 2022-11-04       전현정           최초 생성
+ * 2022-11-06       이상학           updateChild 메소드 추가
  * </pre>
  *
  * @author 전현정(최초 작성자)
@@ -23,6 +24,7 @@ import com.purpleprint.network.purpleprintproject.auth.command.application.dto.T
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ChildAccountCreationFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ConnectFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.GrantFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Login;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Logout;
@@ -102,6 +104,28 @@ public class UserService {
     public List<Child> selectChildList(int id) {
 
         return childRepository.findAllByUserId(id);
+    }
+
+    public int updateChild(int id) {
+
+        Child myChild = childRepository.findById(id).get();
+
+        if(myChild != null) {
+
+            if(myChild.getGrantHeart() == 0) {
+                throw new GrantFailException("하트 개수가 0입니다!");
+            }
+
+            myChild.setGivenHeart(myChild.getGivenHeart() + 1);
+            myChild.setGrantHeart(myChild.getGrantHeart() - 1);
+
+            return 1;
+
+        } else {
+
+            return 0;
+        }
+
     }
 
     @Transactional

@@ -1,4 +1,4 @@
-package com.purpleprint.network.purpleprintproject.entities;
+package com.purpleprint.network.purpleprintproject.heart.command.domain.model;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -11,18 +11,12 @@ import java.util.Date;
 @DynamicUpdate
 @Table(name = "tbl_heart")
 @Access(AccessType.FIELD)
-@SequenceGenerator(
-        name = "heart_sequence_generator",
-        sequenceName = "seq_heart_id",
-        initialValue = 1,
-        allocationSize = 50
-)
 public class Heart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "heart_sequence_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "heart_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "giver", nullable = false)
     private int giver;
