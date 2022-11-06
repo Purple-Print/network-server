@@ -1,10 +1,6 @@
 package com.purpleprint.network.purpleprintproject.common.exception;
 
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ChildAccountCreationFailException;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ConnectFailException;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.GrantFailException;
-import com.purpleprint.network.purpleprintproject.auth.command.application.exception.LoginFailedException;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.*;
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +80,17 @@ public class CommonExceptionHandler {
     @ExceptionHandler(value = {ConnectFailException.class})
     protected ResponseEntity<?> connectChildFailedException(ConnectFailException ex) {
 
+        Map<String,Object> responseMap = new HashMap<>();
+
+        responseMap.put("error", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
+    }
+
+    @ExceptionHandler(value = {UpdatePasswordFailException.class})
+    protected ResponseEntity<?> updatePasswordFailedException(UpdatePasswordFailException ex) {
 
         Map<String,Object> responseMap = new HashMap<>();
 
