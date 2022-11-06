@@ -13,19 +13,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * <pre>
- * Class : CustomUserDetailsService
- * Comment:
+ * Class : ChildCustomUserDetailsService
+ * Comment: 클래스에 대한 간단 설명
  * History
  * ================================================================
  * DATE             AUTHOR           NOTE
  * ----------------------------------------------------------------
- * 2022-11-02       전현정           최초 생성
+ * 2022-11-06       전현정           최초 생성
  * </pre>
  *
  * @author 전현정(최초 작성자)
@@ -33,13 +31,13 @@ import java.util.List;
  * @see
  */
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class ChildCustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final ChildRepository childRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository, ChildRepository childRepository) {
+    public ChildCustomUserDetailsService(UserRepository userRepository, ChildRepository childRepository) {
         this.userRepository = userRepository;
         this.childRepository = childRepository;
     }
@@ -47,24 +45,28 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
-        }
+        Child child = childRepository.findByName(username);
 
-        /* custom user 정보 생성 */
-        UserDTO userDto = new UserDTO();
-        List<ChildDTO> childDTOList = new ArrayList<>();
+        User user = userRepository.findById(child.getUserId()).get();
 
-        userDto.setId(user.getId());
-        userDto.setUsername(user.getUsername());
-        userDto.setPassword(user.getPwd());
-        userDto.setRole(user.getRole().toString());
-        userDto.setEmail(user.getEmail());
-        userDto.setName(user.getName());
-        userDto.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(userDto.getRole())));
+        ChildDTO childDTO = new ChildDTO();
+        childDTO.setChildId(child.getId());
+        childDTO.setChildName(child.getName());
+        childDTO.setConnectNum(child.getConnectNum());
+        childDTO.setGivenHeart(child.getGivenHeart());
+        childDTO.setGrantHeart(child.getGrantHeart());
 
-        return userDto;
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPwd());
+        userDTO.setRole(user.getRole().toString());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setName(user.getName());
+        userDTO.setChild(childDTO);
+        userDTO.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(userDTO.getRole())));
+
+        return userDTO;
     }
 
 }

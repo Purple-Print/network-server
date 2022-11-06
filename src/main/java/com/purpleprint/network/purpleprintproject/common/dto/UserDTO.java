@@ -31,18 +31,18 @@ public class UserDTO implements UserDetails {
     private String email;       // user email
     private String name;        // user name
 
-    private List<ChildDTO> childList; // user child
+    private ChildDTO child; // user child
     private String role;        // user role
 
     public UserDTO() {}
 
-    public UserDTO(int id, String username, String password, String email, String name, List<ChildDTO> childList, String role, Collection<? extends GrantedAuthority> authorities) {
+    public UserDTO(int id, String username, String password, String email, String name, ChildDTO child, String role, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;
-        this.childList = childList;
+        this.child = child;
         this.role = role;
         this.authorities = authorities;
     }
@@ -79,12 +79,12 @@ public class UserDTO implements UserDetails {
         this.name = name;
     }
 
-    public List<ChildDTO> getChildList() {
-        return childList;
+    public ChildDTO getChild() {
+        return child;
     }
 
-    public void setChildList(List<ChildDTO> childList) {
-        this.childList = childList;
+    public void setChild(ChildDTO child) {
+        this.child = child;
     }
 
     public String getRole() {
@@ -146,7 +146,7 @@ public class UserDTO implements UserDetails {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", childList=" + childList +
+                ", child=" + child +
                 ", role=" + role +
                 ", authorities=" + authorities +
                 '}';
