@@ -24,5 +24,11 @@ import java.util.List;
  */
 @Repository
 public interface HeartRepository extends JpaRepository<Heart, Integer> {
-    List<Heart> findByGiverAndGaveAt(int giver, Date date);
+
+//    @Query(value = "SELECT \n" +
+//            "H.id, H.giver, H.recipient, H.gaveAt \n" +
+//            "FROM Heart H \n" +
+//            "WHERE H.giver = :giver \n" +
+//            "AND H.gaveAt between :date1 and :date2")
+    List<Heart> findByGiverAndGaveAtBetween(int giver, Date date1, Date date2);
 }
