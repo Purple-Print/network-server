@@ -1,8 +1,12 @@
 package com.purpleprint.network.purpleprintproject.heart.command.infra.service;
 
+import com.purpleprint.network.purpleprintproject.auth.command.application.service.UserService;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.heart.command.domain.service.ChildHeartService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -21,8 +25,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChildHeartServiceImpl implements ChildHeartService {
 
+    private final UserService userService;
+
+    public ChildHeartServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Transactional
     @Override
     public int giveHeart(int id) {
 
+        int result = userService.updateChild(id);
+
+        return result;
     }
 }
