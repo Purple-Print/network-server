@@ -1,6 +1,7 @@
 package com.purpleprint.network.purpleprintproject.common.exception;
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ChildAccountCreationFailException;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ConnectFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.LoginFailedException;
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
@@ -67,4 +68,15 @@ public class CommonExceptionHandler {
                 .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
     }
 
+    @ExceptionHandler(value = {ConnectFailException.class})
+    protected ResponseEntity<?> connectChildFailedException(ConnectFailException ex) {
+
+        Map<String,Object> responseMap = new HashMap<>();
+
+        responseMap.put("error", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
+    }
 }
