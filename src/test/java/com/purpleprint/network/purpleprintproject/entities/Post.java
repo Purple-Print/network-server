@@ -33,7 +33,7 @@ public class Post {
     private Date judgeAt;
 
     @Column(name = "post_approval", columnDefinition = "char(1)")
-    private Character approval;
+    private char approval;
 
     @Column(name = "post_delete_yn", columnDefinition = "char(1) default 'N'")
     private char deleteYn;
