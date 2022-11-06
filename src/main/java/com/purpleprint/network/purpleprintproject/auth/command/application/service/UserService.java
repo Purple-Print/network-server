@@ -16,14 +16,25 @@ package com.purpleprint.network.purpleprintproject.auth.command.application.serv
  * @see
  */
 
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.CharacterDTO;
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildDTO;
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.ChildInfoDTO;
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.TokenDTO;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ChildAccountCreationFailException;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.ConnectFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.DeleteUserFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Login;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Logout;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.User;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.ChildRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LoginRepository;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LogoutRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.UserRepository;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.service.OwnerService;
+import com.purpleprint.network.purpleprintproject.character.command.domain.model.Character;
+import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
+import com.purpleprint.network.purpleprintproject.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,12 +50,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final ChildRepository childRepository;
     private final LoginRepository loginRepository;
+    private final LogoutRepository logoutRepository;
+    private final TokenProvider tokenProvider;
+    private final OwnerService ownerService;
+
 
     @Autowired
-    public UserService(UserRepository userRepository, ChildRepository childRepository, LoginRepository loginRepository) {
+    public UserService(UserRepository userRepository, ChildRepository childRepository, LoginRepository loginRepository,
+                       TokenProvider tokenProvider, OwnerService ownerService, LogoutRepository logoutRepository) {
+
         this.userRepository = userRepository;
         this.childRepository= childRepository;
         this.loginRepository = loginRepository;
+        this.logoutRepository = logoutRepository;
+        this.tokenProvider = tokenProvider;
+        this.ownerService = ownerService;
     }
 
     @Transactional
@@ -96,5 +116,64 @@ public class UserService {
         }
 
         return true;
+    }
+
+    @Transactional
+    public ChildInfoDTO connectChild(UserDTO userDTO, ChildDTO childDTO) {
+        System.out.println(childDTO);
+
+        Child child = childRepository.findByIdAndUserId(childDTO.getChildId(), userDTO.getId());
+        User user = userRepository.findById(child.getUserId()).get();
+
+        if(child == null) {
+            throw new ConnectFailException("자녀 계정이 존재하지 않습니다.");
+        }
+
+        Login login = loginRepository.findByChildIdOrderByIdDesc(childDTO.getChildId());
+
+        if(login != null) {
+            Logout logout = logoutRepository.findByLoginId(login.getId());
+
+            if(logout == null) {
+                throw new ConnectFailException("자녀 계정을 이미 사용 중입니다.");
+            }
+
+        }
+
+        try {
+            loginRepository.save(new Login(
+                    0,
+                    new Date(new java.util.Date().getTime()),
+                    child.getId()
+            ));
+        } catch(Exception e) {
+            throw new ConnectFailException("자녀 계정 접속에 실패하셨습니다.");
+        }
+
+        //토큰 발행
+        TokenDTO tokenDTO = tokenProvider.childTokenDto(user, child);
+
+        //유저 캐릭터 조회
+        Character characterInfo = ownerService.selectChildCharacter(child);
+
+        //responsedto
+        CharacterDTO characterDTO = new CharacterDTO();
+        if(characterInfo != null) {
+            characterDTO.setCharacterId(characterInfo.getId());
+            characterDTO.setUrl(characterInfo.getCharacterFile().getUrl());
+            characterDTO.setFileName(characterInfo.getCharacterFile().getName());
+        }
+
+        ChildInfoDTO childInfo = new ChildInfoDTO(
+                child.getId(),
+                child.getName(),
+                child.getConnectNum(),
+                child.getGrantHeart(),
+                child.getGivenHeart(),
+                characterDTO,
+                tokenDTO.getAccessToken()
+        );
+
+        return childInfo;
     }
 }
