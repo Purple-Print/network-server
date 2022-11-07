@@ -4,9 +4,14 @@ server:
 spring:
   config:
     import:
-     - classpath:application-aws.yml #aws
+     - classpath:application-awsdb.yml #aws rds
      - classpath:application-jwt.yml #JwtConfig
      - classpath:application-mail.yml #mail
+     - classpath:application-awsS3.yml #aws s3 스토리지
+  servlet:
+    multipart:
+      max-file-size: 4000MB
+      max-request-size: 4000MB
   jpa:
     database: mysql
     show-sql: true
