@@ -98,6 +98,27 @@ public class UserService {
         return newChild;
     }
 
+    @Transactional
+    public void initializeGrantHeart() {
+
+        List<Child> childList = childRepository.findAll();
+
+        childList.forEach(child -> {
+            child.setGrantHeart(5);
+        });
+
+    }
+
+    @Transactional
+    public void initializeGivenHeart() {
+
+        List<Child> childList = childRepository.findAll();
+
+        childList.forEach(child -> {
+            child.setGivenHeart(0);
+        });
+    }
+
     public List<Child> selectChildList(int id) {
 
         return childRepository.findAllByUserId(id);
@@ -208,4 +229,5 @@ public class UserService {
             throw new UpdatePasswordFailException("비밀번호 변경에 실패했습니다.");
         }
     }
+
 }
