@@ -6,6 +6,7 @@ import com.purpleprint.network.purpleprintproject.heart.command.application.dto.
 import com.purpleprint.network.purpleprintproject.heart.command.domain.model.Heart;
 import com.purpleprint.network.purpleprintproject.heart.command.domain.repository.HeartRepository;
 import com.purpleprint.network.purpleprintproject.heart.command.domain.service.ChildHeartService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,16 @@ public class HeartService {
     public HeartService(HeartRepository heartRepository, ChildHeartService childHeartService) {
         this.heartRepository = heartRepository;
         this.childHeartService = childHeartService;
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void initializeGrantHeart() {
+        childHeartService.initializeGrantHeart();
+    }
+
+    @Scheduled(cron = "0 0 0 * * 1")
+    public void initializeGivenHeart() {
+        childHeartService.initializeGivenHeart();
     }
 
     @Transactional

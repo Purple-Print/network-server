@@ -17,4 +17,8 @@ package com.purpleprint.network.purpleprintproject.heart.command.domain.service;
 
 public interface ChildHeartService {
     public int giveHeart(int id);
+
+    void initializeGrantHeart();
+
+    void initializeGivenHeart();
 }
