@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.purpleprint.network.purpleprintproject.s3.dto.FileDTO;
 import com.purpleprint.network.purpleprintproject.s3.exception.FileEmptyException;
+import com.purpleprint.network.purpleprintproject.s3.repository.AwsS3UploadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,14 +34,14 @@ import java.util.UUID;
 @Service
 public class AwsS3UploadService {
 
-    private AmazonS3 amazonS3;
+    private final AwsS3UploadRepository awsS3UploadRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     @Autowired
-    public AwsS3UploadService(AmazonS3 amazonS3) {
-        this.amazonS3 = amazonS3;
+    public AwsS3UploadService(AwsS3UploadRepository awsS3UploadRepository) {
+        this.awsS3UploadRepository = awsS3UploadRepository;
     }
 
     public void validateFileExists(MultipartFile multipartFile) {
@@ -67,17 +68,7 @@ public class AwsS3UploadService {
 
         String s3Key = folderName + "/" + conversionFileName;
 
-        //파일명에 따른 ContentType 설정
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(multipartFile.getContentType());
-        objectMetadata.setContentLength(multipartFile.getSize());
-
-        try (final InputStream uploadFileInputStream = multipartFile.getInputStream()){
-            amazonS3.putObject(new PutObjectRequest(s3Location, conversionFileName, uploadFileInputStream, objectMetadata)
-                    .withCannedAcl(CannedAccessControlList.PublicRead));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+       awsS3UploadRepository.awsUpload(s3Location, conversionFileName, multipartFile);
 
         String url = "https://purpleprint-bucket.s3.ap-northeast-2.amazonaws.com/" + folderName + "/" + conversionFileName;
 
