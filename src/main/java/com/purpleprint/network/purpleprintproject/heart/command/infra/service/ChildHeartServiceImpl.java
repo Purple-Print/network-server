@@ -39,4 +39,14 @@ public class ChildHeartServiceImpl implements ChildHeartService {
 
         return result;
     }
+
+    @Override
+    public void initializeGrantHeart() {
+        userService.initializeGrantHeart();
+    }
+
+    @Override
+    public void initializeGivenHeart() {
+        userService.initializeGivenHeart();
+    }
 }
