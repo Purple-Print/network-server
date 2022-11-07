@@ -25,8 +25,8 @@ import java.util.Date;
 @NoArgsConstructor  // 파라미터가 없는 기본 생성자를 생성
 public class HeartDTO {
 
-    private int id;
-    private int giver;
-    private int recipient;
+    private Integer id;
+    private Integer giver;
+    private Integer recipient;
     private Date gaveAt;
 }

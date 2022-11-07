@@ -1,5 +1,6 @@
 package com.purpleprint.network.purpleprintproject.heart.command.application.service;
 
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.GrantFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.heart.command.application.dto.HeartDTO;
 import com.purpleprint.network.purpleprintproject.heart.command.domain.model.Heart;
@@ -12,6 +13,7 @@ import java.beans.Transient;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class HeartService {
     }
 
     @Transactional
-    public int giveHeart(HeartDTO heartDTO) throws ParseException {
+    public List<Integer> giveHeart(HeartDTO heartDTO) throws ParseException {
 
         String t1 = LocalDate.now() + " 00:00:00";
         String t2 = LocalDate.now() + " 23:59:59";
@@ -52,15 +54,13 @@ public class HeartService {
         Date date1 = formatter.parse(t1);
         Date date2 = formatter.parse(t2);
 
-        System.out.println("date1 : " + date2);
-
         List<Heart> heartInfo = heartRepository.findByGiverAndGaveAtBetween(heartDTO.getGiver(), date1, date2);
 
         System.out.println("heartInfo : " + heartInfo);
 
         for(int i=0; i<heartInfo.size(); i++){
             if(heartInfo.get(i).getRecipient() == heartDTO.getRecipient()) {
-                return 0;
+                throw new GrantFailException("하트 나눔 실패!");
             }
         }
 
@@ -71,15 +71,17 @@ public class HeartService {
                     new Date(new java.util.Date().getTime())
             ));
 
+        List<Integer> recipientInfo = heartRepository.findAllRecipient(heartDTO.getGiver(), date1, date2);
+
         int giveHeartResult = childHeartService.giveHeart(heartDTO.getGiver());
 
         if(giveHeartResult == 0) {
 
-            return 0;
+            throw new GrantFailException("하트 나눔 실패!");
         } else{
 
-            return 1;
+            return recipientInfo;
         }
-
     }
+
 }

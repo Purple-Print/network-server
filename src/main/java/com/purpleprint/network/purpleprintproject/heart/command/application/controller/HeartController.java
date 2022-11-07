@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,16 +50,11 @@ public class HeartController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         Map<String, Object> responseMap = new HashMap<>();
 
-        int result = heartService.giveHeart(heartDTO);
+        List<Integer> result = heartService.giveHeart(heartDTO);
 
-        if(result == 0) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST, "하트 나눠주기 실패!", responseMap));
-        } else {
-            return ResponseEntity
-                    .ok()
-                    .body(new ResponseMessage(HttpStatus.OK, "하트 나눠주기 성공!", responseMap));
-        }
+        responseMap.put("recipient ", result);
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "하트 나눠주기 성공!", responseMap));
     }
 }

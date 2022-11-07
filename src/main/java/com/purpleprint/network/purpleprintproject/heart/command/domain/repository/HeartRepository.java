@@ -31,4 +31,11 @@ public interface HeartRepository extends JpaRepository<Heart, Integer> {
 //            "WHERE H.giver = :giver \n" +
 //            "AND H.gaveAt between :date1 and :date2")
     List<Heart> findByGiverAndGaveAtBetween(int giver, Date date1, Date date2);
+
+    @Query(value = "SELECT \n" +
+            "H.recipient \n" +
+            "FROM Heart H \n" +
+            "WHERE H.giver = :giver \n" +
+            "AND H.gaveAt between :date1 and :date2")
+    List<Integer> findAllRecipient(Integer giver, Date date1, Date date2);
 }
