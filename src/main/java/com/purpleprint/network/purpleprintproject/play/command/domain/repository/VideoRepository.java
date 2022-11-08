@@ -24,4 +24,6 @@ import java.util.List;
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Integer> {
     List<Video> findAllByChildIdAndDeleteYn(int childId, String n);
+
+    Video findByIdAndChildIdAndDeleteYn(int videoId, int childId, String n);
 }
