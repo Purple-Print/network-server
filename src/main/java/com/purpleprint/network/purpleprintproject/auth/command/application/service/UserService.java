@@ -189,6 +189,7 @@ public class UserService {
                     new Date(new java.util.Date().getTime()),
                     child.getId()
             ));
+            child.setConnectNum(child.getConnectNum() + 1);
         } catch(Exception e) {
             throw new ConnectFailException("자녀 계정 접속에 실패하셨습니다.");
         }
@@ -200,12 +201,6 @@ public class UserService {
         Character characterInfo = ownerService.selectChildCharacter(child);
 
         //responsedto
-        CharacterDTO characterDTO = new CharacterDTO();
-        if(characterInfo != null) {
-            characterDTO.setCharacterId(characterInfo.getId());
-            characterDTO.setUrl(characterInfo.getCharacterFile().getUrl());
-            characterDTO.setFileName(characterInfo.getCharacterFile().getName());
-        }
 
         ChildInfoDTO childInfo = new ChildInfoDTO(
                 child.getId(),
@@ -213,9 +208,18 @@ public class UserService {
                 child.getConnectNum(),
                 child.getGrantHeart(),
                 child.getGivenHeart(),
-                characterDTO,
+                null,
                 tokenDTO.getAccessToken()
         );
+
+        if(characterInfo != null) {
+            CharacterDTO characterDTO = new CharacterDTO();
+            characterDTO.setCharacterId(characterInfo.getId());
+            characterDTO.setUrl(characterInfo.getCharacterFile().getUrl());
+            characterDTO.setFileName(characterInfo.getCharacterFile().getName());
+            childInfo.setCharacter(characterDTO);
+        }
+
 
         return childInfo;
     }
