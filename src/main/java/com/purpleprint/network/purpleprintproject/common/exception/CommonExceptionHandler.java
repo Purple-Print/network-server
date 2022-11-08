@@ -1,6 +1,7 @@
 package com.purpleprint.network.purpleprintproject.common.exception;
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.*;
+import com.purpleprint.network.purpleprintproject.character.command.application.exception.CreateCharacterFailException;
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,6 +92,18 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(value = {UpdatePasswordFailException.class})
     protected ResponseEntity<?> updatePasswordFailedException(UpdatePasswordFailException ex) {
+
+        Map<String,Object> responseMap = new HashMap<>();
+
+        responseMap.put("error", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
+    }
+
+    @ExceptionHandler(value = {CreateCharacterFailException.class})
+    protected ResponseEntity<?> createCharacterFailException(CreateCharacterFailException ex) {
 
         Map<String,Object> responseMap = new HashMap<>();
 

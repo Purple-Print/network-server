@@ -33,10 +33,10 @@ public class CharacterFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "charaterfile_url")
+    @Column(name = "characterfile_url")
     private String url;
 
-    @Column(name = "charaterfile_name")
+    @Column(name = "characterfile_name")
     private String name;
 
 }

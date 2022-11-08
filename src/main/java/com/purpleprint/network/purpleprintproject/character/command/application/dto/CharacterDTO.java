@@ -1,4 +1,4 @@
-package com.purpleprint.network.purpleprintproject.auth.command.application.dto;
+package com.purpleprint.network.purpleprintproject.character.command.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,4 +28,5 @@ public class CharacterDTO {
     private int characterId;
     private String url;
     private String fileName;
+
 }

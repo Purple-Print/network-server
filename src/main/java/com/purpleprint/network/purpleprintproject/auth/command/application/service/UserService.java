@@ -28,6 +28,7 @@ import com.purpleprint.network.purpleprintproject.auth.command.domain.repository
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LogoutRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.UserRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.service.OwnerService;
+import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import com.purpleprint.network.purpleprintproject.character.command.domain.model.Character;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
 import com.purpleprint.network.purpleprintproject.jwt.TokenProvider;
