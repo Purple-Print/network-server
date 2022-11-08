@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -79,5 +76,22 @@ public class PlayController {
         return ResponseEntity
                 .ok()
                 .body(new ResponseMessage(HttpStatus.OK, "select videoList success", responseMap));
+    }
+
+    @DeleteMapping("/{videoId}")
+    public ResponseEntity<?> deleteVideo(@AuthenticationPrincipal UserDTO userDTO, @PathVariable("videoId") int videoId) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Map<String, Object> responseMap = new HashMap<>();
+
+        playService.deleteVideo(userDTO.getChild().getChildId(), videoId);
+
+        responseMap.put("result", "success");
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "delete video success", responseMap));
+
     }
 }
