@@ -2,6 +2,7 @@ package com.purpleprint.network.purpleprintproject.common.exception;
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.*;
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
+import com.purpleprint.network.purpleprintproject.play.command.application.exception.SaveVideoFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class CommonExceptionHandler {
 
         Map<String,Object> responseMap = new HashMap<>();
 
-        responseMap.put("error", ex.getMessage());
+        responseMap.put("errorMessage", ex.getMessage());
 
         return ResponseEntity
                 .badRequest()
@@ -46,7 +47,7 @@ public class CommonExceptionHandler {
 
         Map<String,Object> responseMap = new HashMap<>();
 
-        responseMap.put("error", ex.getMessage());
+        responseMap.put("errorMessage", ex.getMessage());
 
         return ResponseEntity
                 .badRequest()
@@ -58,7 +59,7 @@ public class CommonExceptionHandler {
 
         Map<String,Object> responseMap = new HashMap<>();
 
-        responseMap.put("error", ex.getMessage());
+        responseMap.put("errorMessage", ex.getMessage());
 
         return ResponseEntity
                 .badRequest()
@@ -70,7 +71,7 @@ public class CommonExceptionHandler {
     protected ResponseEntity<?> grantFailExceptionHandler(GrantFailException ex) {
         Map<String,Object> responseMap = new HashMap<>();
 
-        responseMap.put("error", ex.getMessage());
+        responseMap.put("errorMessage", ex.getMessage());
 
         return ResponseEntity
                 .badRequest()
@@ -82,7 +83,7 @@ public class CommonExceptionHandler {
 
         Map<String,Object> responseMap = new HashMap<>();
 
-        responseMap.put("error", ex.getMessage());
+        responseMap.put("errorMessage", ex.getMessage());
 
         return ResponseEntity
                 .badRequest()
@@ -94,7 +95,18 @@ public class CommonExceptionHandler {
 
         Map<String,Object> responseMap = new HashMap<>();
 
-        responseMap.put("error", ex.getMessage());
+        responseMap.put("errorMessage", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
+    }
+
+    @ExceptionHandler(value = {SaveVideoFailedException.class})
+    protected ResponseEntity<?> saveVideoFailedException(SaveVideoFailedException ex) {
+
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("errorMessage", ex.getMessage());
 
         return ResponseEntity
                 .badRequest()
