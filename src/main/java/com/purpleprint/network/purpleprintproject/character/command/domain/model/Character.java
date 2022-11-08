@@ -31,7 +31,7 @@ public class Character {
     @Id
     @Column(name = "character_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column(name = "child_id")
     private int childId;
@@ -41,3 +41,4 @@ public class Character {
     private CharacterFile characterFile;
 
 }
+
