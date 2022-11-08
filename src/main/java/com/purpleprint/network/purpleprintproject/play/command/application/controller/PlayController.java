@@ -64,4 +64,20 @@ public class PlayController {
                 .created(URI.create("video"))
                 .body(new ResponseMessage(HttpStatus.CREATED, "video save success", responseMap));
     }
+
+    @GetMapping("")
+    public ResponseEntity<?> getVideo(@AuthenticationPrincipal UserDTO userDTO) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Map<String, Object> responseMap = new HashMap<>();
+
+        List<Video> videoList = playService.selectVideoByChildId(userDTO.getChild().getChildId());
+
+        responseMap.put("videoList", videoList);
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "select videoList success", responseMap));
+    }
 }
