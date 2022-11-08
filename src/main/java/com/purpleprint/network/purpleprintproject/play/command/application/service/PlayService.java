@@ -2,6 +2,7 @@ package com.purpleprint.network.purpleprintproject.play.command.application.serv
 
 import com.purpleprint.network.purpleprintproject.common.dto.ChildDTO;
 import com.purpleprint.network.purpleprintproject.play.command.application.dto.VideoDTO;
+import com.purpleprint.network.purpleprintproject.play.command.application.exception.DeleteVideoFailedException;
 import com.purpleprint.network.purpleprintproject.play.command.application.exception.SaveVideoFailedException;
 import com.purpleprint.network.purpleprintproject.play.command.domain.model.Video;
 import com.purpleprint.network.purpleprintproject.play.command.domain.repository.VideoRepository;
@@ -70,5 +71,22 @@ public class PlayService {
     public List<Video> selectVideoByChildId(int childId) {
 
         return videoRepository.findAllByChildIdAndDeleteYn(childId, "N");
+    }
+
+    @Transactional
+    public void deleteVideo(int childId, int videoId) {
+        //비디오 존재 조회
+        Video deleteVideo = videoRepository.findByIdAndChildIdAndDeleteYn(videoId, childId, "N");
+
+        if(deleteVideo == null) {
+            throw new DeleteVideoFailedException("영상이 존재하지 않습니다.");
+        }
+
+        try {
+            deleteVideo.setDeleteYn("Y");
+        } catch(Exception e) {
+            throw new DeleteVideoFailedException("영상 삭제에 실패하셨습니다.");
+        }
+
     }
 }
