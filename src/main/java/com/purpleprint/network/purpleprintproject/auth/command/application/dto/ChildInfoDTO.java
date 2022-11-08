@@ -1,5 +1,6 @@
 package com.purpleprint.network.purpleprintproject.auth.command.application.dto;
 
+import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
