@@ -27,7 +27,7 @@ import com.purpleprint.network.purpleprintproject.auth.command.domain.repository
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LoginRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LogoutRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.UserRepository;
-import com.purpleprint.network.purpleprintproject.auth.command.domain.service.OwnerService;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.service.AwnerService;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import com.purpleprint.network.purpleprintproject.character.command.domain.model.Character;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
@@ -50,13 +50,13 @@ public class UserService {
     private final LoginRepository loginRepository;
     private final LogoutRepository logoutRepository;
     private final TokenProvider tokenProvider;
-    private final OwnerService ownerService;
+    private final AwnerService ownerService;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
     public UserService(UserRepository userRepository, ChildRepository childRepository, LoginRepository loginRepository,
-                       TokenProvider tokenProvider, OwnerService ownerService, LogoutRepository logoutRepository, PasswordEncoder passwordEncoder) {
+                       TokenProvider tokenProvider, AwnerService ownerService, LogoutRepository logoutRepository, PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
         this.childRepository= childRepository;
