@@ -1,5 +1,6 @@
 package com.purpleprint.network.purpleprintproject.auth.command.domain.service;
 
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.LogoutDTO;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
 import com.purpleprint.network.purpleprintproject.character.command.domain.model.Character;
 
@@ -18,6 +19,9 @@ import com.purpleprint.network.purpleprintproject.character.command.domain.model
  * @version 1(클래스 버전)
  * @see
  */
-public interface OwnerService {
+public interface AwnerService {
     Character selectChildCharacter(Child child);
+
+    void saveLogAndAbnormalBehavior(int childId, LogoutDTO logoutDTO);
+
 }
