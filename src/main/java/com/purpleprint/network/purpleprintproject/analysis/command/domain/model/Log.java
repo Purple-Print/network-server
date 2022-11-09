@@ -38,8 +38,8 @@ public class Log {
     @Column(name = "log_x_coord")
     private Float xCoord;
 
-    @Column(name = "log_y_coord")
-    private Float yCoord;
+    @Column(name = "log_z_coord")
+    private Float zCoord;
 
     @Column(name = "child_id")
     private int childId;
