@@ -1,16 +1,13 @@
-package com.purpleprint.network.purpleprintproject.auth.command.application.dto;
+package com.purpleprint.network.purpleprintproject.analysis.command.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.purpleprint.network.purpleprintproject.analysis.command.application.dto.LogDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * <pre>
- * Class : LogoutDTO
+ * Class : LogDTO
  * Comment: 클래스에 대한 간단 설명
  * History
  * ================================================================
@@ -27,22 +24,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogoutDTO {
-
-    @JsonProperty("xCoord")
-    private Float xCoord;
-
-    @JsonProperty("yCoord")
-    private Float yCoord;
-
-    @JsonProperty("zCoord")
-    private Float zCoord;
-
-    private Float pointing;
-
-    private Float jumping;
-
-    private Float punching;
-
-    private List<LogDTO> log;
+public class LogDTO {
+    @JsonProperty("xPosition")
+    private Float xPosition;
+    @JsonProperty("zPosition")
+    private Float zPosition;
+    private int currentTime;
 }
