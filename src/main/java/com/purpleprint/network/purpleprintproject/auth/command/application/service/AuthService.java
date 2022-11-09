@@ -4,10 +4,11 @@ package com.purpleprint.network.purpleprintproject.auth.command.application.serv
 import antlr.Token;
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.*;
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.LoginFailedException;
-import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
-import com.purpleprint.network.purpleprintproject.auth.command.domain.model.User;
-import com.purpleprint.network.purpleprintproject.auth.command.domain.model.UserRole;
+import com.purpleprint.network.purpleprintproject.auth.command.application.exception.LogoutFailException;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.model.*;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.ChildRepository;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LoginRepository;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LogoutRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.UserRepository;
 import com.purpleprint.network.purpleprintproject.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ import java.util.*;
 public class AuthService {
     private final UserRepository userRepository;
     private final ChildRepository childRepository;
+    private final LoginRepository loginRepository;
+    private final LogoutRepository logoutRepository;
     private final MailService mailService;
 
     private final PasswordEncoder passwordEncoder;
@@ -45,10 +48,13 @@ public class AuthService {
 
     @Autowired
     public AuthService(UserRepository userRepository, ChildRepository childRepository,
+                       LoginRepository loginRepository, LogoutRepository logoutRepository,
                        PasswordEncoder passwordEncoder, TokenProvider tokenProvider,
                        MailService mailService) {
         this.userRepository = userRepository;
         this.childRepository = childRepository;
+        this.loginRepository = loginRepository;
+        this.logoutRepository = logoutRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
         this.mailService = mailService;
@@ -196,5 +202,36 @@ public class AuthService {
         }
 
         return sb.toString();
+    }
+
+    @Transactional
+    public void logout(com.purpleprint.network.purpleprintproject.common.dto.ChildDTO child, LogoutDTO logoutDTO) {
+
+        Login loginInfo = loginRepository.findTopByChildIdOrderByIdDesc(child.getChildId());
+
+        System.out.println(child);
+
+        Logout logout = logoutRepository.findByLoginId(loginInfo.getId());
+
+        if(logout != null) {
+            throw new LogoutFailException("이미 로그아웃 되셨습니다.");
+        }
+
+        System.out.println(loginInfo);
+
+        try {
+
+            logoutRepository.save(new Logout(
+                    0,
+                    logoutDTO.getXCoord(),
+                    logoutDTO.getYCoord(),
+                    logoutDTO.getZCoord(),
+                    new Date(new java.util.Date().getTime()),
+                    loginInfo.getId()
+            ));
+        } catch (Exception e) {
+            throw new LogoutFailException("로그아웃 실패하셨습니다.");
+        }
+
     }
 }
