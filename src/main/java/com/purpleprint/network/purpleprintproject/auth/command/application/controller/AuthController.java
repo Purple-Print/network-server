@@ -148,7 +148,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@AuthenticationPrincipal com.purpleprint.network.purpleprintproject.common.dto.UserDTO userDTO, LogoutDTO logoutDTO) {
+    public ResponseEntity<?> logout(@AuthenticationPrincipal com.purpleprint.network.purpleprintproject.common.dto.UserDTO userDTO, @RequestBody LogoutDTO logoutDTO) {
         HttpHeaders headers = new HttpHeaders(); //헤더 생성
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
         Map<String,Object> responseMap = new HashMap<>();
