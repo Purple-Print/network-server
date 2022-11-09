@@ -172,7 +172,7 @@ public class UserService {
             throw new ConnectFailException("자녀 계정이 존재하지 않습니다.");
         }
 
-        Login login = loginRepository.findByChildIdOrderByIdDesc(childDTO.getChildId());
+        Login login = loginRepository.findTopByChildIdOrderByIdDesc(childDTO.getChildId());
 
         if(login != null) {
             Logout logout = logoutRepository.findByLoginId(login.getId());
