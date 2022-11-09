@@ -25,9 +25,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LogDTO {
-    @JsonProperty("xPosition")
-    private Float xPosition;
-    @JsonProperty("zPosition")
-    private Float zPosition;
+    @JsonProperty("xCoord")
+    private Float xCoord;
+    @JsonProperty("zCoord")
+    private Float zCoord;
     private int currentTime;
 }
