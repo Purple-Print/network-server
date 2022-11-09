@@ -22,4 +22,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Integer> {
     Login findByChildIdOrderByIdDesc(int childId);
+
+    Login findTopByChildIdOrderByIdDesc(int childId);
 }
