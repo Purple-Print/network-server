@@ -2,6 +2,7 @@ package com.purpleprint.network.purpleprintproject.analysis.command.application.
 
 import com.purpleprint.network.purpleprintproject.analysis.command.application.exception.SaveLogAndAbnormalBehaviorException;
 import com.purpleprint.network.purpleprintproject.analysis.command.domain.model.AbnormalBehavior;
+import com.purpleprint.network.purpleprintproject.analysis.command.domain.model.Log;
 import com.purpleprint.network.purpleprintproject.analysis.command.domain.repository.AbnormalBehaviorRepoistory;
 import com.purpleprint.network.purpleprintproject.analysis.command.domain.repository.LogRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.LogoutDTO;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <pre>
@@ -53,6 +56,25 @@ public class AnalysisService {
 
         } catch(Exception e) {
             throw new SaveLogAndAbnormalBehaviorException("이상행동 저장에 실패하셨습니다.");
+        }
+
+        //log 셋팅
+        List<Log> saveLogList = new ArrayList<>();
+        logoutDTO.getLog().forEach(log -> {
+            Log saveLog = new Log(
+                    0,
+                    log.getXCoord(),
+                    log.getZCoord(),
+                    childId,
+                    new Date(log.getCurrentTime()));
+
+            saveLogList.add(saveLog);
+        });
+
+        try {
+            logRepository.saveAll(saveLogList);
+        } catch(Exception e) {
+            throw new SaveLogAndAbnormalBehaviorException("로그 저장에 실패하셨습니다.");
         }
     }
 }
