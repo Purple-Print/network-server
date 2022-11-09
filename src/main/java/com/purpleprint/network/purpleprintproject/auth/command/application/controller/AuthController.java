@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -144,6 +145,21 @@ public class AuthController {
                     .body(new ResponseMessage(HttpStatus.BAD_REQUEST, "name,email not match", responseMap));
         }
 
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@AuthenticationPrincipal com.purpleprint.network.purpleprintproject.common.dto.UserDTO userDTO, LogoutDTO logoutDTO) {
+        HttpHeaders headers = new HttpHeaders(); //헤더 생성
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
+        Map<String,Object> responseMap = new HashMap<>();
+
+        authService.logout(userDTO.getChild(), logoutDTO);
+
+        responseMap.put("result", "success");
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "logout success", responseMap));
     }
 
 }
