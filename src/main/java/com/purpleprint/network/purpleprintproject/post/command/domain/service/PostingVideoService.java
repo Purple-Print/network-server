@@ -25,4 +25,5 @@ import java.util.List;
 public interface PostingVideoService {
     Video insertVideo(ChildDTO child, MultipartFile post);
 
+    Video selectVideoByChildId(int childId, Integer videoId);
 }
