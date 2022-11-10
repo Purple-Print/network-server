@@ -23,6 +23,6 @@ import java.util.List;
  */
 @Repository
 public interface PostRepository extends JpaRepository <Post, Integer> {
-    List<Post> findAllByApproval(String y);
+    List<Post> findAllByApprovalAndDeleteYn(String y, String n);
     List<Post> findAllByVideoChildId(int childId);
 }
