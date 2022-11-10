@@ -173,9 +173,9 @@ public class UserService {
         }
 
         Login login = loginRepository.findTopByChildIdOrderByIdDesc(childDTO.getChildId());
-
+        Logout logout = null;
         if(login != null) {
-            Logout logout = logoutRepository.findByLoginId(login.getId());
+            logout = logoutRepository.findByLoginId(login.getId());
 
             if(logout == null) {
                 throw new ConnectFailException("자녀 계정을 이미 사용 중입니다.");
@@ -201,7 +201,6 @@ public class UserService {
         Character characterInfo = ownerService.selectChildCharacter(child);
 
         //responsedto
-
         ChildInfoDTO childInfo = new ChildInfoDTO(
                 child.getId(),
                 child.getName(),
@@ -209,6 +208,9 @@ public class UserService {
                 child.getGrantHeart(),
                 child.getGivenHeart(),
                 null,
+                logout.getXCoord(),
+                logout.getYCoord(),
+                logout.getZCoord(),
                 tokenDTO.getAccessToken()
         );
 
