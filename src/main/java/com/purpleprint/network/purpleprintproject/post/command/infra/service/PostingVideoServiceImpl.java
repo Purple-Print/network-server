@@ -30,14 +30,20 @@ import java.util.List;
 public class PostingVideoServiceImpl implements PostingVideoService {
 
     private final PlayService playService;
+    private final com.purpleprint.network.purpleprintproject.play.query.service.PlayService queryPlayService;
 
     @Autowired
-    public PostingVideoServiceImpl(PlayService playService) {
+    public PostingVideoServiceImpl(PlayService playService, com.purpleprint.network.purpleprintproject.play.query.service.PlayService queryPlayService) {
         this.playService = playService;
+        this.queryPlayService = queryPlayService;
     }
     @Override
     public Video insertVideo(ChildDTO child, MultipartFile post) {
         return playService.saveVideo(child, post);
     }
 
+    @Override
+    public Video selectVideoByChildId(int childId, Integer videoId) {
+        return queryPlayService.selectVideoByChildId(childId, videoId);
+    }
 }
