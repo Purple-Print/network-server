@@ -47,4 +47,28 @@ public class PostService {
 
         return postRepository.findAllByApprovalAndDeleteYn("Y", "N");
     }
+    @Transactional
+    public Post insertPostAndVideo(ChildDTO child, MultipartFile post) {
+        Video saveVideo = postingVideoService.insertVideo(child, post);
+
+        Post savePost = null;
+
+        try {
+            savePost = postRepository.save(new Post(
+                    0,
+                    new Date(new Date().getTime()),
+                    null,
+                    null,
+                    "N",
+                    null,
+                    saveVideo
+            ));
+        } catch (Exception e) {
+            throw new SavePostAndVideoFailException("영상 게시 신청에 실패하셨습니다.");
+        }
+
+        return savePost;
+    }
+
+
 }
