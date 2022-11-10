@@ -1,5 +1,6 @@
 package com.purpleprint.network.purpleprintproject.post.command.application.dto;
 
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDTO {
+    private Integer videoId;
     private MultipartFile file;
 }
