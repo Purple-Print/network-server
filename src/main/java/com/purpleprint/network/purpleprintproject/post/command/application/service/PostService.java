@@ -95,4 +95,12 @@ public class PostService {
 
         return savePost;
     }
+    public List<Post> selectPostApplicationList(UserDTO userDTO) {
+
+        if(userDTO.getRole() == "ROLE_USER") {
+            return postRepository.findAllByVideoChildId(userDTO.getChild().getChildId());
+        }
+
+        return postRepository.findAll();
+    }
 }
