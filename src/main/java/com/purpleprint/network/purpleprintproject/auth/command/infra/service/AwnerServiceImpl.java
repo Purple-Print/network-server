@@ -1,7 +1,9 @@
 package com.purpleprint.network.purpleprintproject.auth.command.infra.service;
 
+import com.purpleprint.network.purpleprintproject.analysis.command.application.service.AnalysisService;
+import com.purpleprint.network.purpleprintproject.auth.command.application.dto.LogoutDTO;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
-import com.purpleprint.network.purpleprintproject.auth.command.domain.service.OwnerService;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.service.AwnerService;
 import com.purpleprint.network.purpleprintproject.character.command.domain.model.Character;
 import com.purpleprint.network.purpleprintproject.character.query.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +25,25 @@ import org.springframework.stereotype.Service;
  * @see
  */
 @Service
-public class OwnerServiceImpl implements OwnerService {
+public class AwnerServiceImpl implements AwnerService {
 
     private final CharacterService characterService;
+    private final AnalysisService analysisService;
 
     @Autowired
-    public OwnerServiceImpl(CharacterService characterService) {
+    public AwnerServiceImpl(CharacterService characterService, AnalysisService analysisService) {
         this.characterService = characterService;
+        this.analysisService = analysisService;
     }
 
     @Override
     public Character selectChildCharacter(Child child) {
 
         return characterService.selectChildCharacter(child);
+    }
+
+    @Override
+    public void saveLogAndAbnormalBehavior(int childId, LogoutDTO logoutDTO) {
+        analysisService.saveLogAndAbnormalBehavior(childId, logoutDTO);
     }
 }
