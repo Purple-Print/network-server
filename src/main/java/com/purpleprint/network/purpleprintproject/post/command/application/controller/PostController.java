@@ -64,4 +64,19 @@ public class PostController {
                 .ok()
                 .body(new ResponseMessage(HttpStatus.OK,"select videoList success",responseMap));
     }
+    @PostMapping("")
+    public ResponseEntity<?> postPosting(@AuthenticationPrincipal UserDTO userDTO, PostDTO postDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Map<String, Object> responseMap = new HashMap<>();
+
+        Post postApplication = postService.insertPostAndVideo(userDTO.getChild(), postDTO.getFile());
+
+        responseMap.put("posting", postApplication);
+
+        return ResponseEntity
+                .created(URI.create("/post"))
+                .body(new ResponseMessage(HttpStatus.CREATED, "post application success", responseMap));
+    }
+
 }
