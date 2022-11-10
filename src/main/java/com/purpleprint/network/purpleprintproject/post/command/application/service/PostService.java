@@ -70,5 +70,29 @@ public class PostService {
         return savePost;
     }
 
+    @Transactional
+    public Post insertPost(ChildDTO child, Integer videoId) {
+        Video savedVideo = postingVideoService.selectVideoByChildId(child.getChildId(), videoId);
 
+        if(savedVideo == null) {
+            throw new SavePostAndVideoFailException("게시할 영상이 존재하지 않습니다.");
+        }
+
+        Post savePost = null;
+        try{
+            savePost = postRepository.save(new Post(
+                    0,
+                    new Date(new Date().getTime()),
+                    null,
+                    null,
+                    "N",
+                    null,
+                    savedVideo
+            ));
+        } catch (Exception e) {
+            throw new SavePostAndVideoFailException("영상 게시 신청에 실패하셨습니다.");
+        }
+
+        return savePost;
+    }
 }
