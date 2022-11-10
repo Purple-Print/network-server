@@ -5,6 +5,7 @@ import com.purpleprint.network.purpleprintproject.analysis.command.domain.model.
 import com.purpleprint.network.purpleprintproject.analysis.command.domain.model.Log;
 import com.purpleprint.network.purpleprintproject.analysis.command.domain.repository.AbnormalBehaviorRepoistory;
 import com.purpleprint.network.purpleprintproject.analysis.command.domain.repository.LogRepository;
+import com.purpleprint.network.purpleprintproject.analysis.command.domain.service.BehavioralAnalysisService;
 import com.purpleprint.network.purpleprintproject.auth.command.application.dto.LogoutDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,17 +36,20 @@ public class AnalysisService {
 
     private final LogRepository logRepository;
     private final AbnormalBehaviorRepoistory abnormalBehaviorRepoistory;
+    private final BehavioralAnalysisService behavioralAnalysisService;
 
     @Autowired
-    public AnalysisService(LogRepository logRepository, AbnormalBehaviorRepoistory abnormalBehaviorRepoistory) {
+    public AnalysisService(LogRepository logRepository, AbnormalBehaviorRepoistory abnormalBehaviorRepoistory, BehavioralAnalysisService behavioralAnalysisService) {
         this.logRepository = logRepository;
         this.abnormalBehaviorRepoistory = abnormalBehaviorRepoistory;
+        this.behavioralAnalysisService = behavioralAnalysisService;
     }
 
     @Transactional
     public void saveLogAndAbnormalBehavior(int childId, LogoutDTO logoutDTO) {
+        AbnormalBehavior abnormalBehavior = null;
         try {
-            abnormalBehaviorRepoistory.save(new AbnormalBehavior(
+            abnormalBehavior = abnormalBehaviorRepoistory.save(new AbnormalBehavior(
                     0,
                     logoutDTO.getPointing(),
                     logoutDTO.getJumping(),
@@ -71,10 +75,13 @@ public class AnalysisService {
             saveLogList.add(saveLog);
         });
 
+        List<Log> savedLog = null;
         try {
-            logRepository.saveAll(saveLogList);
+            savedLog = logRepository.saveAll(saveLogList);
         } catch(Exception e) {
             throw new SaveLogAndAbnormalBehaviorException("로그 저장에 실패하셨습니다.");
         }
+
+       behavioralAnalysisService.analysisBehavior(abnormalBehavior, savedLog);
     }
 }
