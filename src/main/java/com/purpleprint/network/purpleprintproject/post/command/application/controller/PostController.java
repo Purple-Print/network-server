@@ -85,4 +85,18 @@ public class PostController {
                 .body(new ResponseMessage(HttpStatus.CREATED, "post application success", responseMap));
     }
 
+    @GetMapping("")
+    public ResponseEntity<?> getRequestedList(@AuthenticationPrincipal UserDTO userDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Map<String, Object> responseMap = new HashMap<>();
+
+        List<Post> postApplicationList = postService.selectPostApplicationList(userDTO);
+        responseMap.put("postApplicationList", postApplicationList);
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "post application select success", responseMap));
+    }
+
 }
