@@ -1,5 +1,10 @@
 package com.purpleprint.network.purpleprintproject.analysis.command.domain.service;
 
+import com.purpleprint.network.purpleprintproject.analysis.command.domain.model.AbnormalBehavior;
+import com.purpleprint.network.purpleprintproject.analysis.command.domain.model.Log;
+
+import java.util.List;
+
 /**
  * <pre>
  * Class : BehaviorAnalysisService
@@ -16,4 +21,6 @@ package com.purpleprint.network.purpleprintproject.analysis.command.domain.servi
  * @see
  */
 public interface BehavioralAnalysisService {
+
+    void analysisBehavior(AbnormalBehavior abnormalBehavior, List<Log> savedLog);
 }
