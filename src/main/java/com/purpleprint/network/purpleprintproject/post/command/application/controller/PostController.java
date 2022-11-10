@@ -70,7 +70,13 @@ public class PostController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         Map<String, Object> responseMap = new HashMap<>();
 
-        Post postApplication = postService.insertPostAndVideo(userDTO.getChild(), postDTO.getFile());
+        Post postApplication = null;
+
+        if(postDTO.getVideoId() != null) {
+            postApplication = postService.insertPost(userDTO.getChild(), postDTO.getVideoId());
+        } else {
+            postApplication = postService.insertPostAndVideo(userDTO.getChild(), postDTO.getFile());
+        }
 
         responseMap.put("posting", postApplication);
 
