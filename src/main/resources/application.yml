@@ -8,10 +8,14 @@ spring:
      - classpath:application-jwt.yml #JwtConfig
      - classpath:application-mail.yml #mail
      - classpath:application-awsS3.yml #aws s3 스토리지
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   servlet:
     multipart:
       max-file-size: 4000MB
       max-request-size: 4000MB
+      location: /
   jpa:
     database: mysql
     show-sql: true

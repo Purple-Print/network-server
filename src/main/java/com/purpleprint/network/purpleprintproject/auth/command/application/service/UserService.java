@@ -27,7 +27,7 @@ import com.purpleprint.network.purpleprintproject.auth.command.domain.repository
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LoginRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LogoutRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.UserRepository;
-import com.purpleprint.network.purpleprintproject.auth.command.domain.service.OwnerService;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.service.AwnerService;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import com.purpleprint.network.purpleprintproject.character.command.domain.model.Character;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
@@ -50,13 +50,13 @@ public class UserService {
     private final LoginRepository loginRepository;
     private final LogoutRepository logoutRepository;
     private final TokenProvider tokenProvider;
-    private final OwnerService ownerService;
+    private final AwnerService ownerService;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
     public UserService(UserRepository userRepository, ChildRepository childRepository, LoginRepository loginRepository,
-                       TokenProvider tokenProvider, OwnerService ownerService, LogoutRepository logoutRepository, PasswordEncoder passwordEncoder) {
+                       TokenProvider tokenProvider, AwnerService ownerService, LogoutRepository logoutRepository, PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
         this.childRepository= childRepository;
@@ -172,10 +172,10 @@ public class UserService {
             throw new ConnectFailException("자녀 계정이 존재하지 않습니다.");
         }
 
-        Login login = loginRepository.findByChildIdOrderByIdDesc(childDTO.getChildId());
-
+        Login login = loginRepository.findTopByChildIdOrderByIdDesc(childDTO.getChildId());
+        Logout logout = null;
         if(login != null) {
-            Logout logout = logoutRepository.findByLoginId(login.getId());
+            logout = logoutRepository.findByLoginId(login.getId());
 
             if(logout == null) {
                 throw new ConnectFailException("자녀 계정을 이미 사용 중입니다.");
@@ -201,7 +201,6 @@ public class UserService {
         Character characterInfo = ownerService.selectChildCharacter(child);
 
         //responsedto
-
         ChildInfoDTO childInfo = new ChildInfoDTO(
                 child.getId(),
                 child.getName(),
@@ -209,6 +208,9 @@ public class UserService {
                 child.getGrantHeart(),
                 child.getGivenHeart(),
                 null,
+                logout.getXCoord(),
+                logout.getYCoord(),
+                logout.getZCoord(),
                 tokenDTO.getAccessToken()
         );
 
