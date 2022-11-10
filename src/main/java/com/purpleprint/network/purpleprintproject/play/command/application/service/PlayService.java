@@ -11,6 +11,7 @@ import com.purpleprint.network.purpleprintproject.s3.service.AwsS3UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -43,12 +44,12 @@ public class PlayService {
     }
 
     @Transactional
-    public Video saveVideo(ChildDTO child, VideoDTO videoDTO) {
+    public Video saveVideo(ChildDTO child, MultipartFile video) {
 
         Video saveVideo = null;
 
         try {
-            FileDTO saveFileInfo = awsS3UploadService.upload("video", videoDTO.getVideo());
+            FileDTO saveFileInfo = awsS3UploadService.upload("video", video);
 
             saveVideo = videoRepository.save(new Video(
                     0,

@@ -51,7 +51,7 @@ public class PlayController {
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         Map<String, Object> responseMap = new HashMap<>();
 
-        Video video = playService.saveVideo(userDTO.getChild(), videoDTO);
+        Video video = playService.saveVideo(userDTO.getChild(), videoDTO.getVideo());
 
         List<Video> videoList = playService.selectVideoByChildId(userDTO.getChild().getChildId());
 
