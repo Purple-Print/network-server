@@ -1,5 +1,8 @@
 package com.purpleprint.network.purpleprintproject.character.command.application.controller;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.PictureDTO;
 import com.purpleprint.network.purpleprintproject.character.command.application.exception.PictureReceiveFailException;
@@ -23,9 +26,11 @@ import javax.print.attribute.standard.Media;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -83,32 +88,40 @@ public class CharacterController {
         return data;
     }
     @PostMapping("/recommend")
-    public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, PictureDTO pictureDTO) throws IOException {
+    public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, PictureDTO pictureDTO) throws IOException, UnirestException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        String imageData = Base64.getEncoder().encodeToString(pictureDTO.getImageFile().getBytes());
+//        String imageData = Base64.getEncoder().encodeToString(pictureDTO.getImageFile().getBytes());
 
 
 
-//        byte[] binary = pictureDTO.getImageFile().getBytes();
+        byte[] imageData = pictureDTO.getImageFile().getBytes();
 
         System.out.println("imageData : " + imageData);
 
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("imageFile", imageData);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", imageData);
+//        Map<String, Object> body = new LinkedHashMap<>();
+//        body.put("file", imageData);
+
 
         HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverURL = "http://192.168.0.184:8080/auth/test";
+        String serverURL = "https://55db-119-194-163-123.jp.ngrok.io/files";
+
+//        Unirest.setTimeouts(0, 0);
+//        HttpResponse<String> response = Unirest.post(serverURL)
+//               .field("file", imageData)
+//                .asString();
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(serverURL, requestEntity, String.class);
 
 
 //        byte[] resultImage = Files.readAllBytes(new File("\\public\\"+fileName).toPath());
-        System.out.println("response : " + response);
+        System.out.println("response : " + response.getBody());
 //
 //        return response;
 //        String recommendInfo = characterService.recommendCharacter(userDTO, pictureDTO.getImageFile());
