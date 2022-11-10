@@ -2,6 +2,7 @@ package com.purpleprint.network.purpleprintproject.common.exception;
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.*;
 import com.purpleprint.network.purpleprintproject.character.command.application.exception.CreateCharacterFailException;
+import com.purpleprint.network.purpleprintproject.character.command.application.exception.PictureReceiveFailException;
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
 import com.purpleprint.network.purpleprintproject.play.command.application.exception.DeleteVideoFailedException;
 import com.purpleprint.network.purpleprintproject.play.command.application.exception.SaveVideoFailedException;
@@ -128,6 +129,18 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(value = {CreateCharacterFailException.class})
     protected ResponseEntity<?> createCharacterFailException(CreateCharacterFailException ex) {
+
+        Map<String,Object> responseMap = new HashMap<>();
+
+        responseMap.put("error", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
+    }
+
+    @ExceptionHandler(value = {PictureReceiveFailException.class})
+    protected ResponseEntity<?> pictureReceiveFailException(PictureReceiveFailException ex) {
 
         Map<String,Object> responseMap = new HashMap<>();
 
