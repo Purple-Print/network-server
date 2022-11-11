@@ -22,12 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.print.attribute.standard.Media;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -88,51 +89,9 @@ public class CharacterController {
         return data;
     }
     @PostMapping("/recommend")
-    public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, PictureDTO pictureDTO) throws IOException, UnirestException {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-//        String imageData = Base64.getEncoder().encodeToString(pictureDTO.getImageFile().getBytes());
+    public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, PictureDTO pictureDTO) throws IOException {
 
 
-
-        byte[] imageData = pictureDTO.getImageFile().getBytes();
-
-        System.out.println("imageData : " + imageData);
-
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", imageData);
-//        Map<String, Object> body = new LinkedHashMap<>();
-//        body.put("file", imageData);
-
-
-        HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
-
-        String serverURL = "https://55db-119-194-163-123.jp.ngrok.io/files";
-
-//        Unirest.setTimeouts(0, 0);
-//        HttpResponse<String> response = Unirest.post(serverURL)
-//               .field("file", imageData)
-//                .asString();
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.postForEntity(serverURL, requestEntity, String.class);
-
-
-//        byte[] resultImage = Files.readAllBytes(new File("\\public\\"+fileName).toPath());
-        System.out.println("response : " + response.getBody());
-//
-//        return response;
-//        String recommendInfo = characterService.recommendCharacter(userDTO, pictureDTO.getImageFile());
-//
-        Map<String, Object> responseMap = new HashMap<>();
-
-        responseMap.put("recommendInfo"," recommendInfo");
-
-        return ResponseEntity
-                .ok()
-                .body(new ResponseMessage(HttpStatus.OK, "사진 업로드 성공", responseMap));
 
     }
 
