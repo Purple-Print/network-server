@@ -113,4 +113,20 @@ public class PostController {
                 .body(new ResponseMessage(HttpStatus.OK, "post application select success", responseMap));
 
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<?> deletePostedVideo(@AuthenticationPrincipal UserDTO userDTO, @RequestBody PostDTO postDTO) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Map<String, Object> responseMap = new HashMap<>();
+
+        postService.deletePost(userDTO.getChild(), postDTO.getPostId());
+
+        responseMap.put("result", "success");
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "post application select success", responseMap));
+    }
 }
