@@ -1,6 +1,7 @@
 package com.purpleprint.network.purpleprintproject.character.command.application.service;
 
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
+import com.purpleprint.network.purpleprintproject.character.command.application.dto.PictureDTO;
 import com.purpleprint.network.purpleprintproject.character.command.application.exception.CreateCharacterFailException;
 import com.purpleprint.network.purpleprintproject.character.command.application.exception.PictureReceiveFailException;
 import com.purpleprint.network.purpleprintproject.character.command.domain.model.Character;
@@ -9,9 +10,17 @@ import com.purpleprint.network.purpleprintproject.character.command.domain.respo
 import com.purpleprint.network.purpleprintproject.character.command.domain.respository.CharacterRepository;
 import com.purpleprint.network.purpleprintproject.character.command.domain.service.RecommendService;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -60,43 +69,11 @@ public class CharacterService {
 
         return true;
     }
-//
-//    public String recommendCharacter(UserDTO userDTO, MultipartFile imageFile) throws IOException {
-////        imageFile.transferTo(new File("D:\\" + imageFile.getOriginalFilename()));
-////        return imageFile;
-//        String imagePath = null;
-//        String absolutePath = new File("").getAbsolutePath() + "\\";
-////        String path = "images/profile";
-////        File file = new File(path);
-////        if(!file.exists()) {
-////            file.mkdirs();
-////        }
-//
-//        if(!imageFile.isEmpty()) {
-//            String contentType = imageFile.getContentType();
-//            String originalFileExtension;
-//            if (ObjectUtils.isEmpty(contentType)) {
-//                throw new PictureReceiveFailException("이미지 파일은 jpg, png 만 가능합니다.");
-//            } else {
-//                if (contentType.contains("image/jpeg")) {
-//                    originalFileExtension = ".jpg";
-//                } else if (contentType.contains("image/png")) {
-//                    originalFileExtension = ".png";
-//                } else {
-//                    throw new PictureReceiveFailException("이미지 파일은 jpg, png 만 가능합니다.");
-//                }
-//            }
-////            imagePath = path + "/" + userDTO.getChild().getChildName() + originalFileExtension;
-////            file = new File(absolutePath + imagePath);
-////            imageFile.transferTo(file);
-//
-//            String recommendInfo = recommendService.getRecommend(imageFile);
-//        }
-//        else {
-//            throw new PictureReceiveFailException("이미지 파일이 비어있습니다.");
-//        }
-//
-//        return imagePath;
-//
-//    }
+
+    public ResponseEntity<String> recommendCharacter(PictureDTO pictureDTO) throws IOException {
+
+        ResponseEntity<String> response = recommendService.recommendCharacter(pictureDTO);
+
+        return response;
+    }
 }
