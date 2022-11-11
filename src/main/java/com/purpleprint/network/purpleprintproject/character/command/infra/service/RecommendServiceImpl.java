@@ -1,16 +1,21 @@
+
 package com.purpleprint.network.purpleprintproject.character.command.infra.service;
 
+import com.purpleprint.network.purpleprintproject.character.command.application.dto.PictureDTO;
 import com.purpleprint.network.purpleprintproject.character.command.domain.service.RecommendService;
 import org.apache.tomcat.util.json.JSONParser;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Base64;
 
 /**
@@ -30,29 +35,37 @@ import java.util.Base64;
 @Service
 public class RecommendServiceImpl implements RecommendService {
 
-    private final String aiPath = "";
+
     @Override
-    public String getRecommend(MultipartFile imageFile) {
+    public ResponseEntity<String> recommendCharacter(PictureDTO pictureDTO) throws IOException {
+
+        String serverURL = "https://55db-119-194-163-123.jp.ngrok.io/files";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        byte[] imageData = pictureDTO.getImageFile().getBytes();
+
+        ByteArrayResource imageResource = new ByteArrayResource(imageData) {
+            @Override
+            public String getFilename() {
+                return pictureDTO.getImageFile().getOriginalFilename();
+            }
+        };
+
+        System.out.println("imageData : " + imageData);
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", imageResource);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
 
 
-//        String imageData = Base64.getEncoder().encodeToString(imageFile.getBytes());
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        String url = aiPath;
-//
-//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-//        body.add("image", imageData);
-//        HttpEntity<?> requestMessage = new HttpEntity<>(body, headers);
-//        HttpEntity<String> aiResponse = restTemplate.postForEntity(url, requestMessage, String.class);
-//        JSONParser parser = new JSONParser();
-//
-//        JSONObject data = (JSONObject) parser.parse(aiResponse.getBody());
-//        String resultText = (String) data.get("text");
-//        String resultImage = (String) data.get("image");
-//        String resultByte = resultImage.replace("\n", "");
-//
-//        return recommendInfo;
-        return "dd";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.postForEntity(serverURL, requestEntity, String.class);
+
+        System.out.println("response : " + response.getBody());
+
+        return response;
     }
 }
