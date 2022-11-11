@@ -1,6 +1,10 @@
 package com.purpleprint.network.purpleprintproject.character.command.domain.service;
 
+import com.purpleprint.network.purpleprintproject.character.command.application.dto.PictureDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * <pre>
@@ -18,5 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface RecommendService {
 
-    String getRecommend(MultipartFile imageFile);
+
+    ResponseEntity<String> recommendCharacter(PictureDTO pictureDTO) throws IOException;
 }
