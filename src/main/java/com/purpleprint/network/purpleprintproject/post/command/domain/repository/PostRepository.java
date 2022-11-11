@@ -1,5 +1,6 @@
 package com.purpleprint.network.purpleprintproject.post.command.domain.repository;
 
+import com.purpleprint.network.purpleprintproject.common.dto.ChildDTO;
 import com.purpleprint.network.purpleprintproject.post.command.domain.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,6 @@ import java.util.List;
 public interface PostRepository extends JpaRepository <Post, Integer> {
     List<Post> findAllByApprovalAndDeleteYn(String y, String n);
     List<Post> findAllByVideoChildId(int childId);
+    Post findByIdAndApproval(int postId, Object o);
+    Post findByIdAndVideoChildIdAndDeleteYn(int postId, int childId, String n);
 }

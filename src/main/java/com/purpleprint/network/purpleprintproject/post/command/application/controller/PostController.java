@@ -3,6 +3,7 @@ package com.purpleprint.network.purpleprintproject.post.command.application.cont
 import com.amazonaws.Response;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
+import com.purpleprint.network.purpleprintproject.post.command.application.dto.JudgeDTO;
 import com.purpleprint.network.purpleprintproject.post.command.application.dto.PostDTO;
 import com.purpleprint.network.purpleprintproject.post.command.application.service.PostService;
 import com.purpleprint.network.purpleprintproject.post.command.domain.model.Post;
@@ -12,11 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -99,4 +98,35 @@ public class PostController {
                 .body(new ResponseMessage(HttpStatus.OK, "post application select success", responseMap));
     }
 
+    @PostMapping("/judge")
+    public ResponseEntity<?> postJudgeRequestedVideo(@Valid @RequestBody JudgeDTO judgeDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Map<String, Object> responseMap = new HashMap<>();
+
+        Post updatePost = postService.updatePost(judgeDTO);
+
+        responseMap.put("judgePost", updatePost);
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "post application select success", responseMap));
+
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<?> deletePostedVideo(@AuthenticationPrincipal UserDTO userDTO, @RequestBody PostDTO postDTO) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Map<String, Object> responseMap = new HashMap<>();
+
+        postService.deletePost(userDTO.getChild(), postDTO.getPostId());
+
+        responseMap.put("result", "success");
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "post application select success", responseMap));
+    }
 }

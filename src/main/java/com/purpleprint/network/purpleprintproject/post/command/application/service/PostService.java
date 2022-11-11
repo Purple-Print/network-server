@@ -3,6 +3,9 @@ package com.purpleprint.network.purpleprintproject.post.command.application.serv
 import com.purpleprint.network.purpleprintproject.common.dto.ChildDTO;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
 import com.purpleprint.network.purpleprintproject.play.command.domain.model.Video;
+import com.purpleprint.network.purpleprintproject.post.command.application.dto.JudgeDTO;
+import com.purpleprint.network.purpleprintproject.post.command.application.exception.DeletePostFailException;
+import com.purpleprint.network.purpleprintproject.post.command.application.exception.PostJudgeFailException;
 import com.purpleprint.network.purpleprintproject.post.command.application.exception.SavePostAndVideoFailException;
 import com.purpleprint.network.purpleprintproject.post.command.domain.model.Post;
 import com.purpleprint.network.purpleprintproject.post.command.domain.repository.PostRepository;
@@ -102,5 +105,41 @@ public class PostService {
         }
 
         return postRepository.findAll();
+    }
+
+    @Transactional
+    public Post updatePost(JudgeDTO judgeDTO) {
+
+        Post post = postRepository.findByIdAndApproval(judgeDTO.getPostId(), null);
+        if(post == null) {
+            throw new PostJudgeFailException("이미 심사했거나 존재하지 않는 게시물입니다.");
+        }
+
+        try{
+            post.setApproval(judgeDTO.getApproval());
+            post.setCompanionReason(judgeDTO.getCompanionReason());
+            post.setJudgeAt(new Date(new Date().getTime()));
+        } catch (Exception e) {
+            throw new PostJudgeFailException("심사에 실패하셨습니다.");
+        }
+
+        return post;
+    }
+
+    @Transactional
+    public void deletePost(ChildDTO child, int postId) {
+        Post deletePost = postRepository.findByIdAndVideoChildIdAndDeleteYn(postId, child.getChildId(), "N");
+
+        if(deletePost == null) {
+            throw new DeletePostFailException("게시물이 존재하지 않습니다.");
+        }
+
+        try {
+            deletePost.setDeleteYn("Y");
+
+        } catch(Exception e) {
+            throw new DeletePostFailException("게시 영상 삭제에 실패하셨습니다.");
+        }
+
     }
 }
