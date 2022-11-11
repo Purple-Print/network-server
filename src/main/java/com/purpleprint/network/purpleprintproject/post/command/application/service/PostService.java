@@ -4,6 +4,7 @@ import com.purpleprint.network.purpleprintproject.common.dto.ChildDTO;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
 import com.purpleprint.network.purpleprintproject.play.command.domain.model.Video;
 import com.purpleprint.network.purpleprintproject.post.command.application.dto.JudgeDTO;
+import com.purpleprint.network.purpleprintproject.post.command.application.exception.DeletePostFailException;
 import com.purpleprint.network.purpleprintproject.post.command.application.exception.PostJudgeFailException;
 import com.purpleprint.network.purpleprintproject.post.command.application.exception.SavePostAndVideoFailException;
 import com.purpleprint.network.purpleprintproject.post.command.domain.model.Post;
@@ -123,5 +124,22 @@ public class PostService {
         }
 
         return post;
+    }
+
+    @Transactional
+    public void deletePost(ChildDTO child, int postId) {
+        Post deletePost = postRepository.findByIdAndVideoChildIdAndDeleteYn(postId, child.getChildId(), "N");
+
+        if(deletePost == null) {
+            throw new DeletePostFailException("게시물이 존재하지 않습니다.");
+        }
+
+        try {
+            deletePost.setDeleteYn("Y");
+
+        } catch(Exception e) {
+            throw new DeletePostFailException("게시 영상 삭제에 실패하셨습니다.");
+        }
+
     }
 }
