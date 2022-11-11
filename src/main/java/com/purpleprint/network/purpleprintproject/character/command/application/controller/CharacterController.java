@@ -1,8 +1,5 @@
 package com.purpleprint.network.purpleprintproject.character.command.application.controller;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.PictureDTO;
 import com.purpleprint.network.purpleprintproject.character.command.application.exception.PictureReceiveFailException;
@@ -78,20 +75,20 @@ public class CharacterController {
         }
     }
 
-    private static byte[] getFileBinary(String filepath) {
-        File file = new File(filepath);
-        byte[] data = new byte[(int) file.length()];
-        try (FileInputStream stream = new FileInputStream(file)) {
-            stream.read(data, 0, data.length);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
     @PostMapping("/recommend")
     public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, PictureDTO pictureDTO) throws IOException {
 
+        HttpHeaders headers = new HttpHeaders(); //헤더 생성
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
+        Map<String,Object> responseMap = new HashMap<>();
 
+        ResponseEntity<String> response = characterService.recommendCharacter(pictureDTO);
+
+        responseMap.put("recommendInfo", response.getBody());
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "사진 업로드 성공", responseMap));
 
     }
 
