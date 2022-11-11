@@ -28,4 +28,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostDTO {
     private Integer videoId;
     private MultipartFile file;
+    private int postId;
 }
