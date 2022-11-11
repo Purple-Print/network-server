@@ -6,6 +6,7 @@ import com.purpleprint.network.purpleprintproject.character.command.application.
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
 import com.purpleprint.network.purpleprintproject.play.command.application.exception.DeleteVideoFailedException;
 import com.purpleprint.network.purpleprintproject.play.command.application.exception.SaveVideoFailedException;
+import com.purpleprint.network.purpleprintproject.post.command.application.exception.PostJudgeFailException;
 import com.purpleprint.network.purpleprintproject.post.command.application.exception.SavePostAndVideoFailException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -153,6 +154,18 @@ public class CommonExceptionHandler {
     }
     @ExceptionHandler(value = {SavePostAndVideoFailException.class})
     protected ResponseEntity<?> savePostAndVideoFailException(SavePostAndVideoFailException ex) {
+
+        Map<String,Object> responseMap = new HashMap<>();
+
+        responseMap.put("error", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), responseMap));
+    }
+
+    @ExceptionHandler(value = {PostJudgeFailException.class})
+    protected ResponseEntity<?> postJudgeFailException(PostJudgeFailException ex) {
 
         Map<String,Object> responseMap = new HashMap<>();
 
