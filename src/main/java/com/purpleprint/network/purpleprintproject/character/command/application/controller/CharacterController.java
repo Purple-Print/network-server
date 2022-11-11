@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.print.attribute.standard.Media;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -74,52 +75,16 @@ public class CharacterController {
         }
     }
 
-    private static byte[] getFileBinary(String filepath) {
-        File file = new File(filepath);
-        byte[] data = new byte[(int) file.length()];
-        try (FileInputStream stream = new FileInputStream(file)) {
-            stream.read(data, 0, data.length);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
     @PostMapping("/recommend")
     public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, PictureDTO pictureDTO) throws IOException {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpHeaders headers = new HttpHeaders(); //헤더 생성
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
+        Map<String,Object> responseMap = new HashMap<>();
 
-        byte[] imageData = pictureDTO.getImageFile().getBytes();
+        ResponseEntity<String> response = characterService.recommendCharacter(pictureDTO);
 
-        ByteArrayResource imageResource = new ByteArrayResource(imageData) {
-            @Override
-            public String getFilename() {
-                return pictureDTO.getImageFile().getOriginalFilename();
-            }
-        };
-
-        System.out.println("imageData : " + imageData);
-
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", imageResource);
-
-        HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
-
-        String serverURL = "https://55db-119-194-163-123.jp.ngrok.io/files";
-
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.postForEntity(serverURL, requestEntity, String.class);
-
-        System.out.println("response : " + response.getBody());
-//
-//        return response;
-//        String recommendInfo = characterService.recommendCharacter(userDTO, pictureDTO.getImageFile());
-//
-        Map<String, Object> responseMap = new HashMap<>();
-
-        responseMap.put("recommendInfo"," recommendInfo");
+        responseMap.put("recommendInfo", response.getBody());
 
         return ResponseEntity
                 .ok()
