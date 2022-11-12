@@ -1,5 +1,6 @@
 package com.purpleprint.network.purpleprintproject.auth.command.domain.model;
 
+import com.purpleprint.network.purpleprintproject.heart.command.application.dto.RankingDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +35,29 @@ import javax.persistence.*;
 @DynamicUpdate      // update 시 null인 필드 제외
 @Entity
 @Table(name = "tbl_child")
+@NamedNativeQuery(
+        name = "get_rank_dto",
+        query =
+                "SELECT" +
+                        " c.child_id AS childId," +
+                        " c.child_name AS childName," +
+                        " c.given_heart AS givenHeart," +
+                        " RANK() OVER (ORDER BY given_heart) AS ranking" +
+                        " FROM tbl_child c",
+        resultSetMapping = "get_rank_dto"
+)
+@SqlResultSetMapping(
+        name = "get_rank_dto",
+        classes = @ConstructorResult(
+                targetClass = RankingDTO.class,
+                columns = {
+                        @ColumnResult(name = "childId", type = Integer.class),
+                        @ColumnResult(name = "childName", type = String.class),
+                        @ColumnResult(name = "givenHeart", type = Integer.class),
+                        @ColumnResult(name = "ranking", type = Integer.class)
+                }
+        )
+)
 public class Child {
 
     @Id
