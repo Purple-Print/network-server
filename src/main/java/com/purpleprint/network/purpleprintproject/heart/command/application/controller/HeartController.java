@@ -2,6 +2,7 @@ package com.purpleprint.network.purpleprintproject.heart.command.application.con
 
 import com.purpleprint.network.purpleprintproject.common.responsemessage.ResponseMessage;
 import com.purpleprint.network.purpleprintproject.heart.command.application.dto.HeartDTO;
+import com.purpleprint.network.purpleprintproject.heart.command.application.dto.RankingDTO;
 import com.purpleprint.network.purpleprintproject.heart.command.application.service.HeartService;
 import org.hibernate.sql.OracleJoinFragment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,4 +58,20 @@ public class HeartController {
                 .ok()
                 .body(new ResponseMessage(HttpStatus.OK, "하트 나눠주기 성공!", responseMap));
     }
+
+    @GetMapping("")
+    public ResponseEntity<?> getRanking() {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        Map<String, Object> responseMap = new HashMap<>();
+
+        List<RankingDTO> rankingInfo = heartService.getRanking();
+
+        responseMap.put("rankingInfo", rankingInfo);
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "랭킹 조회 성공", responseMap));
+    }
 }
+

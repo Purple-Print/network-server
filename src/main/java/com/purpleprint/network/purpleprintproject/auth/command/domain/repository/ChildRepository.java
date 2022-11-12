@@ -1,7 +1,9 @@
 package com.purpleprint.network.purpleprintproject.auth.command.domain.repository;
 
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
+import com.purpleprint.network.purpleprintproject.heart.command.application.dto.RankingDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,4 +34,7 @@ public interface ChildRepository extends JpaRepository<Child, Integer> {
     Child findByName(String username);
 
     Child findByIdAndUserId(int id, int userId);
+
+    @Query(name = "get_rank_dto", nativeQuery = true)
+    List<RankingDTO> findAllRankingInfo();
 }
