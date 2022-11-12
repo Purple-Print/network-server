@@ -2,7 +2,9 @@ package com.purpleprint.network.purpleprintproject.heart.command.application.ser
 
 import com.purpleprint.network.purpleprintproject.auth.command.application.exception.GrantFailException;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.model.Child;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.ChildRepository;
 import com.purpleprint.network.purpleprintproject.heart.command.application.dto.HeartDTO;
+import com.purpleprint.network.purpleprintproject.heart.command.application.dto.RankingDTO;
 import com.purpleprint.network.purpleprintproject.heart.command.domain.model.Heart;
 import com.purpleprint.network.purpleprintproject.heart.command.domain.repository.HeartRepository;
 import com.purpleprint.network.purpleprintproject.heart.command.domain.service.ChildHeartService;
@@ -37,10 +39,13 @@ import java.util.List;
 public class HeartService {
 
     private final HeartRepository heartRepository;
+
+    private final ChildRepository childRepository;
     private final ChildHeartService childHeartService;
 
-    public HeartService(HeartRepository heartRepository, ChildHeartService childHeartService) {
+    public HeartService(HeartRepository heartRepository, ChildRepository childRepository, ChildHeartService childHeartService) {
         this.heartRepository = heartRepository;
+        this.childRepository = childRepository;
         this.childHeartService = childHeartService;
     }
 
@@ -95,4 +100,11 @@ public class HeartService {
         }
     }
 
+    public List<RankingDTO> getRanking() {
+
+        List<RankingDTO> rankingInfo = childRepository.findAllRankingInfo();
+        System.out.println("rankingInfo : " + rankingInfo);
+
+        return rankingInfo;
+    }
 }
