@@ -54,7 +54,7 @@ public class SwaggerConfig {
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.purpleprint.network.purpleprintproject"))
                 .paths(PathSelectors.any())
                 .build();
     }
