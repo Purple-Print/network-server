@@ -1,5 +1,7 @@
 package com.purpleprint.network.purpleprintproject.auth.command.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,5 +33,11 @@ public class ChildInfoDTO {
     private int grantHeart;
     private int givenHeart;
     private CharacterDTO character;
+    @JsonProperty("xCoord")
+    private Float xCoord;
+    @JsonProperty("yCoord")
+    private Float yCoord;
+    @JsonProperty("zCoord")
+    private Float zCoord;
     private String accessToken;
 }

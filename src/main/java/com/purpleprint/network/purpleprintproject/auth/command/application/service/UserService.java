@@ -27,7 +27,8 @@ import com.purpleprint.network.purpleprintproject.auth.command.domain.repository
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LoginRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.LogoutRepository;
 import com.purpleprint.network.purpleprintproject.auth.command.domain.repository.UserRepository;
-import com.purpleprint.network.purpleprintproject.auth.command.domain.service.OwnerService;
+import com.purpleprint.network.purpleprintproject.auth.command.domain.service.AwnerService;
+import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import com.purpleprint.network.purpleprintproject.character.command.domain.model.Character;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
 import com.purpleprint.network.purpleprintproject.jwt.TokenProvider;
@@ -49,13 +50,13 @@ public class UserService {
     private final LoginRepository loginRepository;
     private final LogoutRepository logoutRepository;
     private final TokenProvider tokenProvider;
-    private final OwnerService ownerService;
+    private final AwnerService ownerService;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
     public UserService(UserRepository userRepository, ChildRepository childRepository, LoginRepository loginRepository,
-                       TokenProvider tokenProvider, OwnerService ownerService, LogoutRepository logoutRepository, PasswordEncoder passwordEncoder) {
+                       TokenProvider tokenProvider, AwnerService ownerService, LogoutRepository logoutRepository, PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
         this.childRepository= childRepository;
@@ -96,6 +97,27 @@ public class UserService {
         }
 
         return newChild;
+    }
+
+    @Transactional
+    public void initializeGrantHeart() {
+
+        List<Child> childList = childRepository.findAll();
+
+        childList.forEach(child -> {
+            child.setGrantHeart(5);
+        });
+
+    }
+
+    @Transactional
+    public void initializeGivenHeart() {
+
+        List<Child> childList = childRepository.findAll();
+
+        childList.forEach(child -> {
+            child.setGivenHeart(0);
+        });
     }
 
     public List<Child> selectChildList(int id) {
@@ -150,10 +172,10 @@ public class UserService {
             throw new ConnectFailException("자녀 계정이 존재하지 않습니다.");
         }
 
-        Login login = loginRepository.findByChildIdOrderByIdDesc(childDTO.getChildId());
-
+        Login login = loginRepository.findTopByChildIdOrderByIdDesc(childDTO.getChildId());
+        Logout logout = null;
         if(login != null) {
-            Logout logout = logoutRepository.findByLoginId(login.getId());
+            logout = logoutRepository.findByLoginId(login.getId());
 
             if(logout == null) {
                 throw new ConnectFailException("자녀 계정을 이미 사용 중입니다.");
@@ -167,6 +189,7 @@ public class UserService {
                     new Date(new java.util.Date().getTime()),
                     child.getId()
             ));
+            child.setConnectNum(child.getConnectNum() + 1);
         } catch(Exception e) {
             throw new ConnectFailException("자녀 계정 접속에 실패하셨습니다.");
         }
@@ -178,22 +201,27 @@ public class UserService {
         Character characterInfo = ownerService.selectChildCharacter(child);
 
         //responsedto
-        CharacterDTO characterDTO = new CharacterDTO();
-        if(characterInfo != null) {
-            characterDTO.setCharacterId(characterInfo.getId());
-            characterDTO.setUrl(characterInfo.getCharacterFile().getUrl());
-            characterDTO.setFileName(characterInfo.getCharacterFile().getName());
-        }
-
         ChildInfoDTO childInfo = new ChildInfoDTO(
                 child.getId(),
                 child.getName(),
                 child.getConnectNum(),
                 child.getGrantHeart(),
                 child.getGivenHeart(),
-                characterDTO,
+                null,
+                logout.getXCoord(),
+                logout.getYCoord(),
+                logout.getZCoord(),
                 tokenDTO.getAccessToken()
         );
+
+        if(characterInfo != null) {
+            CharacterDTO characterDTO = new CharacterDTO();
+            characterDTO.setCharacterId(characterInfo.getId());
+            characterDTO.setUrl(characterInfo.getCharacterFile().getUrl());
+            characterDTO.setFileName(characterInfo.getCharacterFile().getName());
+            childInfo.setCharacter(characterDTO);
+        }
+
 
         return childInfo;
     }
@@ -208,4 +236,5 @@ public class UserService {
             throw new UpdatePasswordFailException("비밀번호 변경에 실패했습니다.");
         }
     }
+
 }
