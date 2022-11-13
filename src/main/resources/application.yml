@@ -2,32 +2,16 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: application
+  profiles:
+    active: dev, awsdb, awsS3, jwt, mail
   config:
-    import:
-     - classpath:application-awsdb.yml #aws rds
-     - classpath:application-jwt.yml #JwtConfig
-     - classpath:application-mail.yml #mail
-     - classpath:application-awsS3.yml #aws s3 스토리지
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  servlet:
-    multipart:
-      max-file-size: 4000MB
-      max-request-size: 4000MB
-      location: /
-  jpa:
-    database: mysql
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        format_sql: true
-        show-sql: true
-    generate-ddl: false
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          audiences:
+    import: optional:configserver:http://43.201.86.153:9999 # config server 주소
+
+# Spring Actuator 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
