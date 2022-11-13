@@ -53,7 +53,7 @@ jobs:
         #Time
       - name: Get Current Time
         uses: 1466587594/get-current-time@v2
-        id: current-time
+        id: get-current-time
         with:
           format: YYYY-MM-DDTHH:mm:ss
           utcOffset: "+09:00"
