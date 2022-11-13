@@ -54,7 +54,7 @@ import javax.persistence.*;
                         @ColumnResult(name = "childId", type = Integer.class),
                         @ColumnResult(name = "childName", type = String.class),
                         @ColumnResult(name = "givenHeart", type = Integer.class),
-                        @ColumnResult(name = "ranking", type = Integer.class)
+                        @ColumnResult(name = "ranking", type = Integer.class),
                 }
         )
 )
