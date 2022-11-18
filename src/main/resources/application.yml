@@ -7,7 +7,7 @@ spring:
   profiles:
     active: dev, awsdb, awsS3, jwt, mail
   config:
-    import: optional:configserver:http://43.201.86.153:9999 # config server 주소
+    import: optional:configserver:http://13.125.28.145:9999 # config server 주소
 
 # Spring Actuator 설정
 management:
