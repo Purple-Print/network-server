@@ -208,9 +208,9 @@ public class UserService {
                 child.getGrantHeart(),
                 child.getGivenHeart(),
                 null,
-                logout.getXCoord(),
-                logout.getYCoord(),
-                logout.getZCoord(),
+                (logout == null)? null: logout.getXCoord(),
+                (logout == null)? null: logout.getYCoord(),
+                (logout == null)? null: logout.getZCoord(),
                 tokenDTO.getAccessToken()
         );
 
