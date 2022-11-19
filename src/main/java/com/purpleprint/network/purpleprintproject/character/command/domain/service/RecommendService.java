@@ -22,6 +22,5 @@ import java.io.IOException;
  */
 public interface RecommendService {
 
-
-    ResponseEntity<String> recommendCharacter(PictureDTO pictureDTO) throws IOException;
+    String recommendCharacter(PictureDTO pictureDTO) throws IOException;
 }
