@@ -71,9 +71,9 @@ public class CharacterService {
         return true;
     }
 
-    public ResponseEntity<String> recommendCharacter(PictureDTO pictureDTO) throws IOException {
+    public String recommendCharacter(PictureDTO pictureDTO) throws IOException {
 
-        ResponseEntity<String> response = recommendService.recommendCharacter(pictureDTO);
+        String response = recommendService.recommendCharacter(pictureDTO);
 
         return response;
     }
