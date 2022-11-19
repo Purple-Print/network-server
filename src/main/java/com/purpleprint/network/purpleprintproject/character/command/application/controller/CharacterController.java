@@ -80,45 +80,10 @@ public class CharacterController {
     public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, PictureDTO pictureDTO) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        byte[] imageData = pictureDTO.getImageFile().getBytes();
-
-        ByteArrayResource imageResource = new ByteArrayResource(imageData) {
-            @Override
-            public String getFilename() {
-                return pictureDTO.getImageFile().getOriginalFilename();
-            }
-        };
-
-        System.out.println("imageData : " + imageData);
-
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", imageResource);
-
-        HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
-
-        String serverURL = "https://0a9b-119-194-163-123.jp.ngrok.io/facedata";
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<ResponseDTO> response = restTemplate.postForEntity(serverURL, requestEntity, ResponseDTO.class);
-
-        System.out.println("response : " + response.getBody());
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         Map<String, Object> responseMap = new HashMap<>();
-
-        ResponseDTO responseCharacter = response.getBody();
-
-        String skinColor = null;
-
-        switch(responseCharacter.getSkinColor()) {
-            case "color1" : skinColor = "Redish"; break;
-            case "color2" : skinColor = "White"; break;
-            case "color3" : skinColor = "Yellowish"; break;
-            case "color4" : skinColor = "Black"; break;
-        }
-
-        String characterFileName = responseCharacter.getFaceShape() + "_" + skinColor + "_Skin.fbx";
+        String characterFileName = characterService.recommendCharacter(pictureDTO);
 
         responseMap.put("fileName", characterFileName);
 
@@ -127,5 +92,4 @@ public class CharacterController {
                 .body(new ResponseMessage(HttpStatus.OK, "character recommend success", responseMap));
 
     }
-
 }
