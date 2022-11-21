@@ -3,6 +3,7 @@ package com.purpleprint.network.purpleprintproject.character.command.infra.servi
 
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.PictureDTO;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.ResponseDTO;
+import com.purpleprint.network.purpleprintproject.character.command.application.exception.RecommendCharacterFailException;
 import com.purpleprint.network.purpleprintproject.character.command.domain.service.RecommendService;
 import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.core.io.ByteArrayResource;
@@ -28,6 +29,7 @@ import java.util.Base64;
  * DATE             AUTHOR           NOTE
  * ----------------------------------------------------------------
  * 2022-11-09       이상학           최초 생성
+ * 2022-11-21       전현정           캐릭터 추천 수정 exception 처리
  * </pre>
  *
  * @author 이상학(최초 작성자)
@@ -38,6 +40,10 @@ public class RecommendServiceImpl implements RecommendService {
 
     @Override
     public String recommendCharacter(PictureDTO pictureDTO) throws IOException {
+
+        if(pictureDTO.getImageFile().isEmpty()) {
+            throw new RecommendCharacterFailException("파일이 존재하지 않습니다. 파일을 전송해주세요.");
+        }
 
         System.out.println(pictureDTO.getImageFile().getOriginalFilename());
         HttpHeaders headers = new HttpHeaders();
@@ -59,12 +65,19 @@ public class RecommendServiceImpl implements RecommendService {
 
         HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverURL = "https://0a9b-119-194-163-123.jp.ngrok.io/facedata";
+        String serverURL = "https://purpleprint-ai.run.goorm.io/facedata";
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<ResponseDTO> response = restTemplate.postForEntity(serverURL, requestEntity, ResponseDTO.class);
+        ResponseEntity<ResponseDTO> response = null;
 
-        System.out.println("response : " + response.getBody());
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            response = restTemplate.postForEntity(serverURL, requestEntity, ResponseDTO.class);
+
+            System.out.println("response : " + response.getBody());
+        } catch (Exception e) {
+            throw new RecommendCharacterFailException("파일 형식이 정확하지 않습니다. 파일을 다시 보내주세요.");
+        }
+
 
 
         ResponseDTO responseCharacter = response.getBody();
