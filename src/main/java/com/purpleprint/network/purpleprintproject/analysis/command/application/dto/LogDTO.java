@@ -29,5 +29,5 @@ public class LogDTO {
     private Float xCoord;
     @JsonProperty("zCoord")
     private Float zCoord;
-    private int currentTime;
+    private long currentTime;
 }
