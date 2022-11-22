@@ -238,4 +238,36 @@ public class AuthService {
         }
 
     }
+
+    @Transactional
+    public void logoutV2(com.purpleprint.network.purpleprintproject.common.dto.ChildDTO child, LogoutV2DTO logoutV2DTO) {
+
+        Login loginInfo = loginRepository.findTopByChildIdOrderByIdDesc(child.getChildId());
+
+        System.out.println(child);
+
+        Logout logout = logoutRepository.findByLoginId(loginInfo.getId());
+
+        if(logout != null) {
+            throw new LogoutFailException("이미 로그아웃 되셨습니다.");
+        }
+
+        System.out.println(loginInfo);
+
+        try {
+
+            logoutRepository.save(new Logout(
+                    0,
+                    logoutV2DTO.getXCoord(),
+                    logoutV2DTO.getYCoord(),
+                    logoutV2DTO.getZCoord(),
+                    new Date(new java.util.Date().getTime()),
+                    loginInfo.getId()
+            ));
+
+        } catch (Exception e) {
+            throw new LogoutFailException("로그아웃 실패하셨습니다.");
+        }
+
+    }
 }
