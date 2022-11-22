@@ -162,4 +162,19 @@ public class AuthController {
                 .body(new ResponseMessage(HttpStatus.OK, "logout success", responseMap));
     }
 
+    @PostMapping("v2/logout")
+    public ResponseEntity<?> logoutV2(@AuthenticationPrincipal com.purpleprint.network.purpleprintproject.common.dto.UserDTO userDTO, @RequestBody LogoutV2DTO logoutV2DTO) {
+        HttpHeaders headers = new HttpHeaders(); //헤더 생성
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); //header contentType 설정
+        Map<String,Object> responseMap = new HashMap<>();
+
+        authService.logoutV2(userDTO.getChild(), logoutV2DTO);
+
+        responseMap.put("result", "success");
+
+        return ResponseEntity
+                .ok()
+                .body(new ResponseMessage(HttpStatus.OK, "logout success", responseMap));
+    }
+
 }
