@@ -65,7 +65,7 @@ public class RecommendServiceImpl implements RecommendService {
 
         HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverURL = "https://purpleprint-ai.run.goorm.io/facedata";
+        String serverURL = "http://34.64.214.200:8000/facedata";
 
         ResponseEntity<ResponseDTO> response = null;
 
