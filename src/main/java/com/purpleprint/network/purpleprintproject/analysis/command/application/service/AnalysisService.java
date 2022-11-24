@@ -82,6 +82,6 @@ public class AnalysisService {
             throw new SaveLogAndAbnormalBehaviorException("로그 저장에 실패하셨습니다.");
         }
 
-       behavioralAnalysisService.analysisBehavior(abnormalBehavior, savedLog);
+//       behavioralAnalysisService.analysisBehavior(abnormalBehavior, savedLog);
     }
 }
