@@ -47,20 +47,20 @@ public class AnalysisService {
 
     @Transactional
     public void saveLogAndAbnormalBehavior(int childId, LogoutDTO logoutDTO) {
-        AbnormalBehavior abnormalBehavior = null;
-        try {
-            abnormalBehavior = abnormalBehaviorRepoistory.save(new AbnormalBehavior(
-                    0,
-                    logoutDTO.getPointing(),
-                    logoutDTO.getJumping(),
-                    logoutDTO.getPunching(),
-                    childId,
-                    new Date(new Date().getTime())
-            ));
-
-        } catch(Exception e) {
-            throw new SaveLogAndAbnormalBehaviorException("이상행동 저장에 실패하셨습니다.");
-        }
+//        AbnormalBehavior abnormalBehavior = null;
+//        try {
+//            abnormalBehavior = abnormalBehaviorRepoistory.save(new AbnormalBehavior(
+//                    0,
+//                    logoutDTO.getPointing(),
+//                    logoutDTO.getJumping(),
+//                    logoutDTO.getPunching(),
+//                    childId,
+//                    new Date(new Date().getTime())
+//            ));
+//
+//        } catch(Exception e) {
+//            throw new SaveLogAndAbnormalBehaviorException("이상행동 저장에 실패하셨습니다.");
+//        }
 
         //log 셋팅
         List<Log> saveLogList = new ArrayList<>();
@@ -82,6 +82,6 @@ public class AnalysisService {
             throw new SaveLogAndAbnormalBehaviorException("로그 저장에 실패하셨습니다.");
         }
 
-       behavioralAnalysisService.analysisBehavior(abnormalBehavior, savedLog);
+//       behavioralAnalysisService.analysisBehavior(abnormalBehavior, savedLog);
     }
 }
