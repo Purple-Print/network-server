@@ -58,12 +58,21 @@ public class CharacterService {
     @Transactional
     public boolean createCharacter(UserDTO userDTO, CharacterDTO characterDTO) {
 
+        Character character = characterRepository.findByChildId(userDTO.getChild().getChildId());
+        System.out.println(character);
+
         try{
-            Character newCharacter = characterRepository.save(new Character(
-                    0,
-                    userDTO.getChild().getChildId(),
-                    characterFileRepository.findByName(characterDTO.getFileName())
-            ));
+
+            if(character != null) {
+                character.setCharacterFile(characterFileRepository.findByName(characterDTO.getFileName()));
+            } else {
+                Character newCharacter = characterRepository.save(new Character(
+                        0,
+                        userDTO.getChild().getChildId(),
+                        characterFileRepository.findByName(characterDTO.getFileName())
+                ));
+            }
+
         } catch (Exception e) {
             throw new CreateCharacterFailException("캐릭터 생성 실패!");
         }
