@@ -77,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .authorizeRequests()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .antMatchers("/auth/**","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**" ).permitAll()
+                    .antMatchers("/", "/auth/**","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**" ).permitAll()
                     .antMatchers("/post/judge").hasAnyRole("ADMIN")
                     .antMatchers("/**").hasAnyRole("USER", "ADMIN")
                 .and()
