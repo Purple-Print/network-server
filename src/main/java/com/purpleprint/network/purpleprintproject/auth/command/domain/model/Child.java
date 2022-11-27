@@ -42,7 +42,7 @@ import javax.persistence.*;
                         " c.child_id AS childId," +
                         " c.child_name AS childName," +
                         " c.given_heart AS givenHeart," +
-                        " RANK() OVER (ORDER BY given_heart) AS ranking" +
+                        " RANK() OVER (ORDER BY given_heart DESC) AS ranking" +
                         " FROM tbl_child c",
         resultSetMapping = "get_rank_dto"
 )
