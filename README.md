@@ -48,11 +48,9 @@
 Application-Server issue -> <a href="https://github.com/Purple-Print/network-server/issues">application-server</a></br>
 Log-Server issue -> <a href="https://github.com/Purple-Print/log-server/issues">log-server</a></br>
 Mail-Batch-Server issue -> <a href="https://github.com/Purple-Print/PurplePrintMailBatchServer/issues">mail-batch-server</a></br>
-Config-Server issue -> <a href="https://github.com/Purple-Print/purpleprintConfig/issue">config-server</a></br>
 
 ## Wiki
 
 Application-Server Wiki -> <a href="https://github.com/Purple-Print/network-server/wiki">application-server</a></br>
 Log-Server Wiki -> <a href="https://github.com/Purple-Print/log-server/wiki">log-server</a></br>
 Mail-Batch-Server Wiki -> <a href="https://github.com/Purple-Print/PurplePrintMailBatchServer/wiki">mail-batch-server</a></br>
-Config-Server Wiki -> <a href="https://github.com/Purple-Print/purpleprintConfig/wiki">config-server</a></br>
