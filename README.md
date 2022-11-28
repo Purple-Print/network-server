@@ -30,11 +30,8 @@
 
 ## Structure
 
-<h3>전체 융합구조도</h3>
 ![전체 융합구조도](https://user-images.githubusercontent.com/65946607/204196096-114be9ba-a496-43ae-b3c9-ec4aab5b28b1.png)
 
-<h3>캐릭터 생성 융합구조도</h3>
 ![캐릭터 생성 융합구조도](https://user-images.githubusercontent.com/65946607/204196072-c52422ce-db15-4a17-80f0-60be20515ba9.png)
 
-<h3>행동분석 데이터 융합구조도</h3>
 ![행동분석 데이터 융합구조도](https://user-images.githubusercontent.com/65946607/204196102-001d60e0-e7a7-4797-b400-b2a2d0a5765e.png)
