@@ -9,9 +9,9 @@
 5. [Wiki](#wiki)
 
 ## Connected Servers
-<h4><a href="https://github.com/Purple-Print/log-server">log-server</a></h4>
-<h4><a href="https://github.com/Purple-Print/PurplePrintMailBatchServer">mail-batch-server</a></h4>
-<h4><a href="https://github.com/Purple-Print/purpleprintConfig">config-server</a></h4>
+1. <h4><a href="https://github.com/Purple-Print/log-server">log-server</a></h4>
+2. <h4><a href="https://github.com/Purple-Print/PurplePrintMailBatchServer">mail-batch-server</a></h4>
+3. <h4><a href="https://github.com/Purple-Print/purpleprintConfig">config-server</a></h4>
 
 ## Features
 1. RDBMS 데이터베이스를 구축하여 파일 시스템을 통해 데이터를 저장할 때 나타나는 문제인 데이터 종속성, 중복성, 무결성 문제를 해결.
