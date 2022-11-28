@@ -29,9 +29,14 @@
 15. Spring Cloud Config를 사용한 Config 서버 구축을 통해 서버를 재배포하지 않고 설정 파일의 변경사항을 반영할 수 있게 하였다.
 
 ## Structure
+### 전체 융합구조도
 
 ![전체 융합구조도](https://user-images.githubusercontent.com/65946607/204196096-114be9ba-a496-43ae-b3c9-ec4aab5b28b1.png)
 
+### 캐릭터 생성 융합구조도
+
 ![캐릭터 생성 융합구조도](https://user-images.githubusercontent.com/65946607/204196072-c52422ce-db15-4a17-80f0-60be20515ba9.png)
+
+### 행동분석 데이터 융합구조도
 
 ![행동분석 데이터 융합구조도](https://user-images.githubusercontent.com/65946607/204196102-001d60e0-e7a7-4797-b400-b2a2d0a5765e.png)
