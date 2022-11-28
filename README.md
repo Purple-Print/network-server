@@ -8,3 +8,4 @@
 <a href="https://github.com/Purple-Print/log-server"><img src="https://img.shields.io/badge/log-server-3DDC84?style=flat-square&logo=Blogger&logoColor=white"/></a>
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=yee950419)](https://github.com/yee950419/github-readme-stats)
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=yee950419)](https://github.com/yee950419/github-readme-stats)
