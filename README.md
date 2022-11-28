@@ -5,6 +5,8 @@
 1. [Connected Servers](#connected-servers)
 2. [Features](#features)
 3. [Structure](#structure)
+4. [Issue](#issue)
+5. [Wiki](#wiki)
 
 ## Connected Servers
 <h4><a href="https://github.com/Purple-Print/log-server">log-server</a></h4>
@@ -40,3 +42,12 @@
 ### 행동분석 데이터 융합구조도
 
 ![행동분석 데이터 융합구조도](https://user-images.githubusercontent.com/65946607/204196102-001d60e0-e7a7-4797-b400-b2a2d0a5765e.png)
+
+## Issue
+
+Application-Server issue -> <h4><a href="https://github.com/Purple-Print/network-server/issues">log-server</a></h4>
+Log-Server issue -> <h4><a href="https://github.com/Purple-Print/log-server/issues">log-server</a></h4>
+Mail-Batch-Server issue -> <h4><a href="https://github.com/Purple-Print/PurplePrintMailBatchServer/issues">log-server</a></h4>
+Config-Server issue -> <h4><a href="https://github.com/Purple-Print/purpleprintConfig/issue">log-server</a></h4>
+
+## Wiki
