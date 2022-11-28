@@ -4,17 +4,12 @@
 
     <h2>연동된 server link</h2>
     <h4>
-      - <a href="https://github.com/Purple-Print/log-server">log-server</a>
+      <a href="https://github.com/Purple-Print/log-server">log-server</a>
     </h4>
     <h4>
-      -
-      <a href="https://github.com/Purple-Print/PurplePrintMailBatchServer"
-        >mail-batch-server</a
+      <a href="https://github.com/Purple-Print/PurplePrintMailBatchServer">mail-batch-server</a
       >
     </h4>
     <h4>
-      -
-      <a href="https://github.com/Purple-Print/purpleprintConfig"
-        >config-server</a
-      >
+      <a href="https://github.com/Purple-Print/purpleprintConfig">config-server</a>
     </h4>
