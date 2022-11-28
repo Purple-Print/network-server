@@ -14,8 +14,8 @@
 3. <h4><a href="https://github.com/Purple-Print/purpleprintConfig">config-server</a></h4>
 
 ## Features
-1. RDBMS 데이터베이스를 구축하여 파일 시스템을 통해 데이터를 저장할 때 나타나는 문제인 데이터 종속성, 중복성, 무결성 문제를 해결.
-2. DDD 설계, JPA 사용을 통해 도메인 중심의 개발을 진행
+1. RDBMS 데이터베이스를 구축하여 파일 시스템을 통해 데이터를 저장할 때 나타나는 문제인 데이터 종속성, 중복성, 무결성 문제를 해결할 수 있다.
+2. DDD 설계, JPA 사용을 통해 도메인 중심의 개발을 진행할 수 있다.
 3. JWT 형식의 로그인 기능 구축하여 세션과 달리 확장성이 용이하고, 데이터 위변조를 막을 수 있다.
 4. Bcrypt 암호화 기능을 사용하여 비밀번호를 안전하게 보관하였다.
 5. Restful API를 통해 여러 시스템 사이에서 정보 교환을 안전하고 효율적으로 하였다.
@@ -51,3 +51,8 @@ Mail-Batch-Server issue -> <a href="https://github.com/Purple-Print/PurplePrintM
 Config-Server issue -> <a href="https://github.com/Purple-Print/purpleprintConfig/issue">config-server</a></br>
 
 ## Wiki
+
+Application-Server Wiki -> <a href="https://github.com/Purple-Print/network-server/wiki">application-server</a></br>
+Log-Server Wiki -> <a href="https://github.com/Purple-Print/log-server/wiki">log-server</a></br>
+Mail-Batch-Server Wiki -> <a href="https://github.com/Purple-Print/PurplePrintMailBatchServer/wiki">mail-batch-server</a></br>
+Config-Server Wiki -> <a href="https://github.com/Purple-Print/purpleprintConfig/wiki">config-server</a></br>
