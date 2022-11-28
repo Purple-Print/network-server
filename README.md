@@ -1,15 +1,11 @@
 <h1>Application Repository</h1>
 <p align='center'>- 이상학, 전현정</p>
 
-## Navigation
+# Navigation
 1. [Connected Servers](#connected-servers)
 2. [Features](#features)
-3. [Color](#color)
-4. [Custom Color List](#custom-color-list)
-5. [Section](#section)
 
-
-# Connected Servers
+## Connected Servers
 <h4><a href="https://github.com/Purple-Print/log-server">log-server</a></h4>
 <h4><a href="https://github.com/Purple-Print/PurplePrintMailBatchServer">mail-batch-server</a></h4>
 <h4><a href="https://github.com/Purple-Print/purpleprintConfig">config-server</a></h4>
