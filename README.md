@@ -4,9 +4,10 @@
 # List
 1. [Connected Servers](#connected-servers)
 2. [Features](#features)
-3. [Structure](#structure)
-4. [Issue](#issue)
-5. [Wiki](#wiki)
+3. [Technology](#technology)
+4. [Structure](#structure)
+5. [Issue](#issue)
+6. [Wiki](#wiki)
 
 ## Connected Servers
 1. <h4><a href="https://github.com/Purple-Print/log-server">log-server</a></h4>
@@ -29,6 +30,13 @@
 13. 실시간 이동좌표 log 수집으로 인한 db 부하를 고려하여 ElasticSearch를 사용한 log 수집용 서버를 따로 분리하였다.
 14. S3 storage, RDS, EC2 AWS 클라우드 서비스 사용을 통해 개발 인프라를 효율적으로 구축 및 관리하였다.
 15. Spring Cloud Config를 사용한 Config 서버 구축을 통해 서버를 재배포하지 않고 설정 파일의 변경사항을 반영할 수 있게 하였다.
+
+##Technology
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"></code>
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/typescript/typescript.png"></code>
+
+![intellijidea](https://user-images.githubusercontent.com/65946607/204408174-3d0b6657-de47-441a-8408-cdc2512cca6d.svg)
+
 
 ## Structure
 ### 전체 융합구조도
