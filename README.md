@@ -81,10 +81,10 @@
 
 ![branch 관리 전략](https://user-images.githubusercontent.com/65946607/204421760-af9c4d57-2d70-4dea-8f42-71d518dfdec2.jpg)
 <br>
-<div><h4>Git Flow 전략 사용</h4></div>
-+ main: 배포를 위한 main 브랜치
-+ dev: 개발 통합 브랜치
-+ feature: 기능 단위 개발 브랜치
++ Git Flow 전략을 사용하였고 main, dev, feature 3가지 종류의 브랜치를 사용하였다.
+1. main: 배포를 위한 main 브랜치
+2. dev: 개발 통합 브랜치
+3. feature: 기능 단위 개발 브랜치
 
 ## Structure
 ### 전체 융합구조도
