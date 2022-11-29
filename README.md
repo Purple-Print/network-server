@@ -81,7 +81,7 @@
 
 ![branch 관리 전략](https://user-images.githubusercontent.com/65946607/204421760-af9c4d57-2d70-4dea-8f42-71d518dfdec2.jpg)
 <br>
-<h4>Git Flow 전략 사용</h4>
+<div><h4>Git Flow 전략 사용</h4></div>
 + main: 배포를 위한 main 브랜치
 + dev: 개발 통합 브랜치
 + feature: 기능 단위 개발 브랜치
