@@ -1,7 +1,7 @@
-<h1>Application Repository</h1>
-<p align='center'>- 이상학, 전현정</p>
+<h1>Purpleprint Application Repository</h1>
+<p>구성원 - 이상학, 전현정</p>
 
-# Navigation
+# List
 1. [Connected Servers](#connected-servers)
 2. [Features](#features)
 3. [Structure](#structure)
