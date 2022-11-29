@@ -6,9 +6,10 @@
 1. [Connected Servers](#connected-servers)
 2. [Features](#features)
 3. [Stacks](#stacks)
-4. [Structure](#structure)
-5. [Issue](#issue)
-6. [Wiki](#wiki)
+4. [Git Branch Strategy](#git-branch=strategy)
+5. [Structure](#structure)
+6. [Issue](#issue)
+7. [Wiki](#wiki)
 <br>
 
 ## Connected Servers
@@ -75,6 +76,13 @@
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
 <br>
 </div>
+
+## Git Branch Strategy
+
+![branch 관리 전략](https://user-images.githubusercontent.com/65946607/204421760-af9c4d57-2d70-4dea-8f42-71d518dfdec2.jpg)
++ main: 배포를 위한 main 브랜치
++ dev: 개발 통합 브랜치
++ feature: 기능 단위 개발 브랜치
 
 ## Structure
 ### 전체 융합구조도
