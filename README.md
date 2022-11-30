@@ -8,9 +8,9 @@
 3. [Stacks](#stacks)
 4. [Git Branch Strategy](#git-branch=strategy)
 5. [CI/CD](#ci/cd)
-5. [Structure](#structure)
-6. [Issue](#issue)
-7. [Wiki](#wiki)
+6. [Structure](#structure)
+7. [Issue](#issue)
+8. [Wiki](#wiki)
 <br>
 
 ## Connected Servers
