@@ -3,6 +3,7 @@ package com.purpleprint.network.purpleprintproject.character.command.application
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.CharacterDTO;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.PictureDTO;
 import com.purpleprint.network.purpleprintproject.character.command.application.dto.ResponseDTO;
+import com.purpleprint.network.purpleprintproject.character.command.application.exception.CreateCharacterFailException;
 import com.purpleprint.network.purpleprintproject.character.command.application.exception.PictureReceiveFailException;
 import com.purpleprint.network.purpleprintproject.character.command.application.service.CharacterService;
 import com.purpleprint.network.purpleprintproject.common.dto.UserDTO;
@@ -73,13 +74,20 @@ public class CharacterController {
         }
     }
 
-    @PostMapping(value = "/recommend", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, @ModelAttribute PictureDTO pictureDTO) throws IOException {
+    @PostMapping("/recommend")
+    public ResponseEntity<?> recommendCharacter(@AuthenticationPrincipal UserDTO userDTO, PictureDTO pictureDTO) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         Map<String, Object> responseMap = new HashMap<>();
+
+        String fileName = pictureDTO.getImageFile().getOriginalFilename();
+        String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
+        if(!fileExt.equals("jpg") && !fileExt.equals("png") && !fileExt.equals("JPG") && !fileExt.equals("PNG")) {
+            throw new CreateCharacterFailException("파일 형식이 적합하지 않습니다.");
+        }
+
         String characterFileName = characterService.recommendCharacter(pictureDTO);
 
         responseMap.put("fileName", characterFileName);
