@@ -6,11 +6,11 @@
 1. [Connected Servers](#connected-servers)
 2. [Features](#features)
 3. [Stacks](#stacks)
-4. [Git Branch Strategy](#git-branch-strategy)
-5. [CI/CD](#ci-cd)
-6. [Structure](#structure)
-7. [Issue](#issue)
-8. [Wiki](#wiki)
+4. [Package structure](#package-structure)
+5. [Git Branch Strategy](#git-branch-strategy)
+6. [CI/CD](#ci-cd)
+7. [Program Structure](#program-structure)
+8. [Issue](#issue)
 <br>
 
 ## Connected Servers
@@ -22,21 +22,22 @@
 
 ## Features
 
-+ RDBMS 데이터베이스를 구축하여 파일 시스템을 통해 데이터를 저장할 때 나타나는 문제인 데이터 종속성, 중복성, 무결성 문제를 해결하였다.
-+ DDD 설계, JPA 사용을 통해 도메인 중심의 개발을 진행하였다.
-+ JWT 형식의 로그인 기능 구축하여 세션과 달리 확장성이 용이하고, 데이터 위변조를 막을 수 있다.
-+ Bcrypt 암호화 기능을 사용하여 비밀번호를 안전하게 보관하였다.
-+ Restful API를 통해 여러 시스템 사이에서 정보 교환을 안전하고 효율적으로 하였다.
-+ swagger를 통해 API를 문서화하여 효율적인 협업을 진행하였다.
-+ event scheduling 기능을 사용하여 정해진 시간에 특정 기능이 작동하도록 구현하였다.
-+ 비동기 처리를 통해 다른 서버에서의 처리 시간이 걸리는 동안 다른 작업을 수행할 수 있도록 구현하였다.
-+ CQRS 형식의 구조를 적용하여 시스템에서 명령을 처리하는 책임과 조회를 처리하는 책임을 분리하기 위한 확장성을 고려하였다.
-+ git flow를 통해 형상관리를 하였다.
-+ 이메일 발송 시 이메일 발송 배치 서버를 따로 분리하여 대용량 데이터 처리에 대한 application 서버의 부하를 줄일 수 있었다.
-+ 최신의 소스를 업데이트 받아 자동으로 빌드해주는 자동화 툴인 Jenkins를 사용하여 이미지 버전 관리를 하였고 서버 자동화 배포를 하였다.(CI/CD pipeline 구축)
-+ 실시간 이동좌표 log 수집으로 인한 db 부하를 고려하여 ElasticSearch를 사용한 log 수집용 서버를 따로 분리하였다.
-+ S3 storage, RDS, EC2 AWS 클라우드 서비스 사용을 통해 개발 인프라를 효율적으로 구축 및 관리하였다.
-+ Spring Cloud Config를 사용한 Config 서버 구축을 통해 서버를 재배포하지 않고 설정 파일의 변경사항을 반영할 수 있게 하였다.
++ MySQL을 사용한 데이터베이스 구축
++ DDD 설계, JPA 사용
++ JWT 형식의 로그인 기능 구축
++ Restful API 개발
++ swagger를 통해 API를 문서화
++ event scheduling 기능 사용
++ 비동기 처리 기능 구현
++ CQRS 형식의 구조를 적용
++ git flow를 통해 형상관리 진행
++ 이메일 발송 배치 서버를 따로 분리
++ Jenkins를 통한 이미지 버전 관리 및 서버 자동화 배포
++ ElasticSearch를 사용한 log 수집용 서버를 따로 분리
++ S3 storage, RDS, EC2 AWS 클라우드 서비스 사용
++ Spring Cloud Config를 사용한 Config 서버 구축
+<br>
+<a href="https://github.com/Purple-Print/network-server/wiki/Features">자세한 내용 보러가기</a>
 <br>
 
 ## Stacks
@@ -78,35 +79,33 @@
 <br>
 </div>
 
+## Package Structure
+
++ CQRS 형식의 구조를 적용하여 시스템에서 명령을 처리하는 책임과 조회를 처리하는 책임을 분리하기 위한 확장성을 고려하며 개발
+<br>
+<a href="https://github.com/Purple-Print/network-server/wiki/%ED%8C%A8%ED%82%A4%EC%A7%80-%EA%B5%AC%EC%A1%B0">자세한 내용 보러가기</a></br>
+<br>
+
 ## Git Branch Strategy
 
-![branch 관리 전략](https://user-images.githubusercontent.com/65946607/204421760-af9c4d57-2d70-4dea-8f42-71d518dfdec2.jpg)
++ Git Flow 전략을 사용하였고 main, dev, feature 3가지 종류의 브랜치를 사용
 <br>
-+ Git Flow 전략을 사용하였고 main, dev, feature 3가지 종류의 브랜치를 사용하였다.
-1. main: 배포를 위한 main 브랜치
-2. dev: 개발 통합 브랜치
-3. feature: 기능 단위 개발 브랜치
+<a href="https://github.com/Purple-Print/network-server/wiki/Git-Branch-Strategy">자세한 내용 보러가기</a>
 <br>
+
 
 ## CI CD
-![cicd](https://user-images.githubusercontent.com/65946607/204679709-466bba40-9030-40b5-9476-f90945563c3b.png)
-![elastic beanstalk](https://user-images.githubusercontent.com/65946607/204680712-c744b045-b9a3-4af5-834e-738d94f4cddf.png)
+
++ Jenkins를 통해 CI/CD pipeline을 구축, elastic beanstalk를 사용하여 불필요한 자원 낭비 없는 서비스 배포
 <br>
-+ Jenkins를 통해 CI/CD pipeline을 구축하였고, elastic beanstalk를 사용하여 불필요한 자원 낭비 없는 서비스 배포를 하였다.
+<a href="https://github.com/Purple-Print/network-server/wiki/CI--CD">자세한 내용 보러가기</a>
 <br>
 
-## Structure
-### 전체 융합구조도
+## Program Structure
 
-![전체 융합구조도](https://user-images.githubusercontent.com/65946607/204196096-114be9ba-a496-43ae-b3c9-ec4aab5b28b1.png)
-
-### 캐릭터 생성 융합구조도
-
-![캐릭터 생성 융합구조도](https://user-images.githubusercontent.com/65946607/204196072-c52422ce-db15-4a17-80f0-60be20515ba9.png)
-
-### 행동분석 데이터 융합구조도
-
-![행동분석 데이터 융합구조도](https://user-images.githubusercontent.com/65946607/204196102-001d60e0-e7a7-4797-b400-b2a2d0a5765e.png)
++ XR - NETWORK - AI 3가지 분야에서 융합하여 개발을 진행
+<br>
+<a href="https://github.com/Purple-Print/network-server/wiki/PurplePrint-Network-%EC%9C%B5%ED%95%A9%EA%B5%AC%EC%A1%B0%EB%8F%84">자세한 내용 보러가기</a>
 <br>
 
 ## Issue
@@ -116,9 +115,3 @@ Log-Server issue -> <a href="https://github.com/Purple-Print/log-server/issues">
 Mail-Batch-Server issue -> <a href="https://github.com/Purple-Print/PurplePrintMailBatchServer/issues">mail-batch-server</a></br>
 <br>
 
-## Wiki
-
-Application-Server Wiki -> <a href="https://github.com/Purple-Print/network-server/wiki">application-server</a></br>
-Log-Server Wiki -> <a href="https://github.com/Purple-Print/log-server/wiki">log-server</a></br>
-Mail-Batch-Server Wiki -> <a href="https://github.com/Purple-Print/PurplePrintMailBatchServer/wiki">mail-batch-server</a></br>
-<br>
