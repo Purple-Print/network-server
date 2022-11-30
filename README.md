@@ -7,6 +7,7 @@
 2. [Features](#features)
 3. [Stacks](#stacks)
 4. [Git Branch Strategy](#git-branch=strategy)
+5. [CI/CD](#ci/cd)
 5. [Structure](#structure)
 6. [Issue](#issue)
 7. [Wiki](#wiki)
@@ -85,6 +86,13 @@
 1. main: 배포를 위한 main 브랜치
 2. dev: 개발 통합 브랜치
 3. feature: 기능 단위 개발 브랜치
+<br>
+
+## CI/CD
+![cicd](https://user-images.githubusercontent.com/65946607/204679709-466bba40-9030-40b5-9476-f90945563c3b.png)
+![elastic beanstalk](https://user-images.githubusercontent.com/65946607/204680712-c744b045-b9a3-4af5-834e-738d94f4cddf.png)
+<br>
++ Jenkins를 통해 CI/CD pipeline을 구축하였고, elastic beanstalk를 사용하여 불필요한 자원 낭비 없는 서비스 배포를 하였다.
 <br>
 
 ## Structure
